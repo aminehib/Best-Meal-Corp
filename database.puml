@@ -1,49 +1,50 @@
 @startuml
 
-class Recette {
+class recipe {
   id : INT <<PK>>
-  titre : VARCHAR
+  title : VARCHAR
   description : TEXT
   image_url : VARCHAR
-  temps_preparation : INT
-  temps_cuisson : INT
-  portions : INT
+  preparation_time : INT
+  cooking_time : INT
+  servings : INT
   created_at : TIMESTAMP
   updated_at : TIMESTAMP
 }
 
-class Ingredient {
+class ingredient {
   id : INT <<PK>>
-  nom : VARCHAR <<UNIQUE>>
+  name : VARCHAR <<UNIQUE>>
   image_url : VARCHAR
   created_at : TIMESTAMP
   updated_at : TIMESTAMP
 }
 
-class Tag {
+class tag {
   id : INT <<PK>>
-  nom : VARCHAR <<UNIQUE>>
+  name : VARCHAR <<UNIQUE>>
   created_at : TIMESTAMP
   updated_at : TIMESTAMP
 }
 
-class RecetteIngredient {
-  recette_id : INT <<PK, FK>>
+class recipe_ingredient {
+  recipe_id : INT <<PK, FK>>
   ingredient_id : INT <<PK, FK>>
-  quantite : DECIMAL
-  unite : VARCHAR
+  quantity : DECIMAL
+  unit : VARCHAR
   notes : VARCHAR
 }
 
-class RecetteTag {
-  recette_id : INT <<PK, FK>>
+class recipe_tag {
+  recipe_id : INT <<PK, FK>>
   tag_id : INT <<PK, FK>>
 }
 
-Recette "1" -- "0..*" RecetteIngredient
-Ingredient "1" -- "0..*" RecetteIngredient
+recipe "1" -- "0..*" recipe_ingredient
+ingredient "1" -- "0..*" recipe_ingredient
 
-Recette "1" -- "0..*" RecetteTag
-Tag "1" -- "0..*" RecetteTag
+recipe "1" -- "0..*" recipe_tag
+tag "1" -- "0..*" recipe_tag
 
 @enduml
+
