@@ -1,0 +1,49 @@
+@startuml
+
+class recipe {
+  id : INT <<PK>>
+  title : VARCHAR(255)
+  description : TEXT
+  image_url : VARCHAR(255)
+  preparation_time : INT
+  cooking_time : INT
+  servings : INT
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+class ingredient {
+  id : INT <<PK>>
+  name : VARCHAR(255) <<UNIQUE>>
+  image_url : VARCHAR(255)
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+class tag {
+  id : INT <<PK>>
+  name : VARCHAR(255) <<UNIQUE>>
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+class recipe_ingredient {
+  recipe_id : INT <<PK, FK>>
+  ingredient_id : INT <<PK, FK>>
+  quantity : DECIMAL(10,2)
+  unit : VARCHAR(50)
+  notes : VARCHAR(255)
+}
+
+class recipe_tag {
+  recipe_id : INT <<PK, FK>>
+  tag_id : INT <<PK, FK>>
+}
+
+recipe "1" -- "0..*" recipe_ingredient
+ingredient "1" -- "0..*" recipe_ingredient
+
+recipe "1" -- "0..*" recipe_tag
+tag "1" -- "0..*" recipe_tag
+
+@enduml
