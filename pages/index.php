@@ -69,5 +69,5 @@
 </section>
 
 <?php include 'includes/footer.php'; 
-echo var_dump($_SERVER);
+
 ?>

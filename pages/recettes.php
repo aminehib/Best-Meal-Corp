@@ -6,12 +6,13 @@ Autoload::register();
 
 $content = "" ;
 
-if(isset($_GET["content"])){
+if(isset($_SESSION["recherche"])){
 
-    $content = $_GET["content"] ;
+    $content = $_SESSION["recherche"] ;
     if(empty($content)){
         $content =  "<script src =\"js/recherche.js\" ></script>" ;
     }
+    unset($_SESSION["recherche"]);
 
 }else{
     
