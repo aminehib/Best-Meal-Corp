@@ -5,6 +5,7 @@ namespace gdb;
 require_once __DIR__ . "/IngredientDB.php";
 require_once __DIR__ . "/TagDB.php";
 require_once __DIR__ . "/DB.php";
+require_once __DIR__ . "/../classe/Recepie.php";
 
 class RecepieDB extends DB{
     private function linkIngredients(int $recipe_id, array $ingredient_ids): void
@@ -53,7 +54,7 @@ class RecepieDB extends DB{
 
         if ($statement !== false) {
             $statement->execute();
-            return $statement->fetchAll(\PDO::FETCH_OBJ);
+            return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
         }
 
         return [];
@@ -68,7 +69,8 @@ class RecepieDB extends DB{
             $statement->bindParam(":id", $id, \PDO::PARAM_INT);
             $statement->execute();
 
-            $result = $statement->fetch(\PDO::FETCH_OBJ);
+            $statement->setFetchMode(\PDO::FETCH_CLASS, "\classe\Recepie");
+            $result = $statement->fetch();
             return $result ?: null;
         }
 
@@ -87,7 +89,7 @@ class RecepieDB extends DB{
             $statement->bindParam(":title", $search, \PDO::PARAM_STR);
             $statement->execute();
 
-            return $statement->fetchAll(\PDO::FETCH_OBJ);
+            return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
         }
 
         return [];
@@ -119,7 +121,7 @@ class RecepieDB extends DB{
         if ($statement !== false) {
             $statement->execute($params);
 
-            return $statement->fetchAll(\PDO::FETCH_OBJ);
+            return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
         }
 
         return [];
@@ -151,7 +153,7 @@ class RecepieDB extends DB{
         if ($statement !== false) {
             $statement->execute($params);
 
-            return $statement->fetchAll(\PDO::FETCH_OBJ);
+            return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
         }
 
         return [];
@@ -315,4 +317,3 @@ class RecepieDB extends DB{
         return $this->getRecepiesByTitle($titles);
     }
 }
-
