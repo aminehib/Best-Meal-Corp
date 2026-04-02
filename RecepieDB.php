@@ -23,7 +23,7 @@ class RecepieDB
         }
     }
 
-    // Récupérer toutes les recettes
+    // Recuperer toutes les recettes
     public function getAllRecepies(): array
     {
         $statement = $this->recepies->prepare("SELECT * FROM recipe");
@@ -36,7 +36,7 @@ class RecepieDB
         return [];
     }
 
-    // Récupérer une recette par son id
+    // Recuperer une recette par son id
     public function getById(int $id): object|null
     {
         $statement = $this->recepies->prepare("SELECT * FROM recipe WHERE id = :id");
@@ -70,21 +70,31 @@ class RecepieDB
         return [];
     }
 
-    // Recherche par ingrédient
-    public function getRecepiesByIngredients(string $ingredient): array
+    // Recherche par ingredient
+    public function getRecepiesByIngredients(array $ingredients): array
     {
+        if ($ingredients === []) {
+            return [];
+        }
+
+        $conditions = [];
+        $params = [];
+
+        foreach ($ingredients as $index => $ingredient) {
+            $conditions[] = "i.name LIKE :ingredient$index";
+            $params[":ingredient$index"] = "%" . $ingredient . "%";
+        }
+
         $statement = $this->recepies->prepare(
             "SELECT DISTINCT r.*
              FROM recipe r
              INNER JOIN recipe_ingredient ri ON r.id = ri.recipe_id
              INNER JOIN ingredient i ON ri.ingredient_id = i.id
-             WHERE i.name LIKE :ingredient"
+             WHERE " . implode(" OR ", $conditions)
         );
 
         if ($statement !== false) {
-            $search = "%" . $ingredient . "%";
-            $statement->bindParam(":ingredient", $search, \PDO::PARAM_STR);
-            $statement->execute();
+            $statement->execute($params);
 
             return $statement->fetchAll(\PDO::FETCH_OBJ);
         }
@@ -93,20 +103,30 @@ class RecepieDB
     }
 
     // Recherche par tag
-    public function getRecepiesByTags(string $tag): array
+    public function getRecepiesByTags(array $tags): array
     {
+        if ($tags === []) {
+            return [];
+        }
+
+        $conditions = [];
+        $params = [];
+
+        foreach ($tags as $index => $tag) {
+            $conditions[] = "t.name LIKE :tag$index";
+            $params[":tag$index"] = "%" . $tag . "%";
+        }
+
         $statement = $this->recepies->prepare(
             "SELECT DISTINCT r.*
              FROM recipe r
              INNER JOIN recipe_tag rt ON r.id = rt.recipe_id
              INNER JOIN tag t ON rt.tag_id = t.id
-             WHERE t.name LIKE :tag"
+             WHERE " . implode(" OR ", $conditions)
         );
 
         if ($statement !== false) {
-            $search = "%" . $tag . "%";
-            $statement->bindParam(":tag", $search, \PDO::PARAM_STR);
-            $statement->execute();
+            $statement->execute($params);
 
             return $statement->fetchAll(\PDO::FETCH_OBJ);
         }
@@ -118,6 +138,8 @@ class RecepieDB
     public function addRecepie(
         string $title,
         string $description,
+        array $ingredient_ids = [],
+        array $tag_ids = [],
         ?string $image_url = null,
         ?int $preparation_time = null,
         ?int $cooking_time = null,
@@ -131,14 +153,67 @@ class RecepieDB
         );
 
         if ($statement !== false) {
-            return $statement->execute([
-                ":title" => $title,
-                ":description" => $description,
-                ":image_url" => $image_url,
-                ":preparation_time" => $preparation_time,
-                ":cooking_time" => $cooking_time,
-                ":servings" => $servings
-            ]);
+            try {
+                $this->recepies->beginTransaction();
+
+                $statement->execute([
+                    ":title" => $title,
+                    ":description" => $description,
+                    ":image_url" => $image_url,
+                    ":preparation_time" => $preparation_time,
+                    ":cooking_time" => $cooking_time,
+                    ":servings" => $servings
+                ]);
+
+                $recipe_id = (int) $this->recepies->lastInsertId();
+
+                if ($ingredient_ids !== []) {
+                    $ingredientStatement = $this->recepies->prepare(
+                        "INSERT INTO recipe_ingredient (recipe_id, ingredient_id)
+                         VALUES (:recipe_id, :ingredient_id)"
+                    );
+
+                    if ($ingredientStatement === false) {
+                        $this->recepies->rollBack();
+                        return false;
+                    }
+
+                    foreach ($ingredient_ids as $ingredient_id) {
+                        $ingredientStatement->execute([
+                            ":recipe_id" => $recipe_id,
+                            ":ingredient_id" => $ingredient_id
+                        ]);
+                    }
+                }
+
+                if ($tag_ids !== []) {
+                    $tagStatement = $this->recepies->prepare(
+                        "INSERT INTO recipe_tag (recipe_id, tag_id)
+                         VALUES (:recipe_id, :tag_id)"
+                    );
+
+                    if ($tagStatement === false) {
+                        $this->recepies->rollBack();
+                        return false;
+                    }
+
+                    foreach ($tag_ids as $tag_id) {
+                        $tagStatement->execute([
+                            ":recipe_id" => $recipe_id,
+                            ":tag_id" => $tag_id
+                        ]);
+                    }
+                }
+
+                $this->recepies->commit();
+                return true;
+            } catch (\Exception $e) {
+                if ($this->recepies->inTransaction()) {
+                    $this->recepies->rollBack();
+                }
+
+                return false;
+            }
         }
 
         return false;
@@ -149,6 +224,8 @@ class RecepieDB
         int $id,
         string $title,
         string $description,
+        array $ingredient_ids = [],
+        array $tag_ids = [],
         ?string $image_url = null,
         ?int $preparation_time = null,
         ?int $cooking_time = null,
@@ -166,15 +243,87 @@ class RecepieDB
         );
 
         if ($statement !== false) {
-            return $statement->execute([
-                ":id" => $id,
-                ":title" => $title,
-                ":description" => $description,
-                ":image_url" => $image_url,
-                ":preparation_time" => $preparation_time,
-                ":cooking_time" => $cooking_time,
-                ":servings" => $servings
-            ]);
+            try {
+                $this->recepies->beginTransaction();
+
+                $statement->execute([
+                    ":id" => $id,
+                    ":title" => $title,
+                    ":description" => $description,
+                    ":image_url" => $image_url,
+                    ":preparation_time" => $preparation_time,
+                    ":cooking_time" => $cooking_time,
+                    ":servings" => $servings
+                ]);
+
+                $deleteIngredientStatement = $this->recepies->prepare(
+                    "DELETE FROM recipe_ingredient WHERE recipe_id = :recipe_id"
+                );
+
+                $deleteTagStatement = $this->recepies->prepare(
+                    "DELETE FROM recipe_tag WHERE recipe_id = :recipe_id"
+                );
+
+                if ($deleteIngredientStatement === false || $deleteTagStatement === false) {
+                    $this->recepies->rollBack();
+                    return false;
+                }
+
+                $deleteIngredientStatement->execute([
+                    ":recipe_id" => $id
+                ]);
+
+                $deleteTagStatement->execute([
+                    ":recipe_id" => $id
+                ]);
+
+                if ($ingredient_ids !== []) {
+                    $ingredientStatement = $this->recepies->prepare(
+                        "INSERT INTO recipe_ingredient (recipe_id, ingredient_id)
+                         VALUES (:recipe_id, :ingredient_id)"
+                    );
+
+                    if ($ingredientStatement === false) {
+                        $this->recepies->rollBack();
+                        return false;
+                    }
+
+                    foreach ($ingredient_ids as $ingredient_id) {
+                        $ingredientStatement->execute([
+                            ":recipe_id" => $id,
+                            ":ingredient_id" => $ingredient_id
+                        ]);
+                    }
+                }
+
+                if ($tag_ids !== []) {
+                    $tagStatement = $this->recepies->prepare(
+                        "INSERT INTO recipe_tag (recipe_id, tag_id)
+                         VALUES (:recipe_id, :tag_id)"
+                    );
+
+                    if ($tagStatement === false) {
+                        $this->recepies->rollBack();
+                        return false;
+                    }
+
+                    foreach ($tag_ids as $tag_id) {
+                        $tagStatement->execute([
+                            ":recipe_id" => $id,
+                            ":tag_id" => $tag_id
+                        ]);
+                    }
+                }
+
+                $this->recepies->commit();
+                return true;
+            } catch (\Exception $e) {
+                if ($this->recepies->inTransaction()) {
+                    $this->recepies->rollBack();
+                }
+
+                return false;
+            }
         }
 
         return false;
@@ -194,5 +343,10 @@ class RecepieDB
         }
 
         return false;
+    }
+
+    public function rechercherRecepie(string|array $titles): array
+    {
+        return $this->getRecepiesByTitle($titles);
     }
 }
