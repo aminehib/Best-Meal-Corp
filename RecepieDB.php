@@ -2,31 +2,54 @@
 
 namespace gdb;
 
-class RecepieDB
-{
-    private \PDO $recepies;
+require_once __DIR__ . "/IngredientDB.php";
+require_once __DIR__ . "/TagDB.php";
+require_once __DIR__ . "/DB.php";
 
-    public function __construct()
+class RecepieDB extends DB{
+    private function linkIngredients(int $recipe_id, array $ingredient_ids): void
     {
-        $db_name = "bestmeal";
-        $db_host = "127.0.0.1";
-        $db_port = "3307";
-        $db_user = "root";
-        $db_pwd = "";
+        $statement = $this->pdo->prepare(
+            "INSERT INTO recipe_ingredient (recipe_id, ingredient_id)
+             VALUES (:recipe_id, :ingredient_id)"
+        );
 
-        try {
-            $dsn = "mysql:dbname=$db_name;host=$db_host;port=$db_port;charset=utf8";
-            $this->recepies = new \PDO($dsn, $db_user, $db_pwd);
-            $this->recepies->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\Exception $e) {
-            die("Erreur connexion : " . $e->getMessage());
+        if ($statement === false) {
+            throw new \Exception("Erreur preparation recipe_ingredient");
+        }
+
+        foreach ($ingredient_ids as $ingredient_id) {
+            $statement->execute([
+                ":recipe_id" => $recipe_id,
+                ":ingredient_id" => $ingredient_id
+            ]);
         }
     }
+
+    private function linkTags(int $recipe_id, array $tag_ids): void
+    {
+        $statement = $this->pdo->prepare(
+            "INSERT INTO recipe_tag (recipe_id, tag_id)
+             VALUES (:recipe_id, :tag_id)"
+        );
+
+        if ($statement === false) {
+            throw new \Exception("Erreur preparation recipe_tag");
+        }
+
+        foreach ($tag_ids as $tag_id) {
+            $statement->execute([
+                ":recipe_id" => $recipe_id,
+                ":tag_id" => $tag_id
+            ]);
+        }
+    }
+
 
     // Recuperer toutes les recettes
     public function getAllRecepies(): array
     {
-        $statement = $this->recepies->prepare("SELECT * FROM recipe");
+        $statement = $this->pdo->prepare("SELECT * FROM recipe");
 
         if ($statement !== false) {
             $statement->execute();
@@ -39,7 +62,7 @@ class RecepieDB
     // Recuperer une recette par son id
     public function getById(int $id): object|null
     {
-        $statement = $this->recepies->prepare("SELECT * FROM recipe WHERE id = :id");
+        $statement = $this->pdo->prepare("SELECT * FROM recipe WHERE id = :id");
 
         if ($statement !== false) {
             $statement->bindParam(":id", $id, \PDO::PARAM_INT);
@@ -55,7 +78,7 @@ class RecepieDB
     // Recherche par titre
     public function getRecepiesByTitle(string $title): array
     {
-        $statement = $this->recepies->prepare(
+        $statement = $this->pdo->prepare(
             "SELECT * FROM recipe WHERE title LIKE :title"
         );
 
@@ -85,7 +108,7 @@ class RecepieDB
             $params[":ingredient$index"] = "%" . $ingredient . "%";
         }
 
-        $statement = $this->recepies->prepare(
+        $statement = $this->pdo->prepare(
             "SELECT DISTINCT r.*
              FROM recipe r
              INNER JOIN recipe_ingredient ri ON r.id = ri.recipe_id
@@ -117,7 +140,7 @@ class RecepieDB
             $params[":tag$index"] = "%" . $tag . "%";
         }
 
-        $statement = $this->recepies->prepare(
+        $statement = $this->pdo->prepare(
             "SELECT DISTINCT r.*
              FROM recipe r
              INNER JOIN recipe_tag rt ON r.id = rt.recipe_id
@@ -137,15 +160,15 @@ class RecepieDB
     // Ajouter une recette
     public function addRecepie(
         string $title,
-        string $description,
-        array $ingredient_ids = [],
-        array $tag_ids = [],
+        ?string $description = null,
+        array $ingredients = [],
+        array $tags = [],
         ?string $image_url = null,
         ?int $preparation_time = null,
         ?int $cooking_time = null,
         ?int $servings = null
     ): bool {
-        $statement = $this->recepies->prepare(
+        $statement = $this->pdo->prepare(
             "INSERT INTO recipe
             (title, description, image_url, preparation_time, cooking_time, servings)
             VALUES
@@ -154,7 +177,18 @@ class RecepieDB
 
         if ($statement !== false) {
             try {
-                $this->recepies->beginTransaction();
+                $ingredient_ids = [];
+                $tag_ids = [];
+
+                foreach ($ingredients as $ingredientName) {
+                    $ingredient_ids[] = (new IngredientDB())->getOrCreateIngredientIdByName((string) $ingredientName);
+                }
+
+                foreach ($tags as $tagName) {
+                    $tag_ids[] = (new TagDB())->getOrCreateTagIdByName((string) $tagName);
+                }
+
+                $this->pdo->beginTransaction();
 
                 $statement->execute([
                     ":title" => $title,
@@ -165,51 +199,15 @@ class RecepieDB
                     ":servings" => $servings
                 ]);
 
-                $recipe_id = (int) $this->recepies->lastInsertId();
+                $recipe_id = (int) $this->pdo->lastInsertId();
+                $this->linkIngredients($recipe_id, $ingredient_ids);
+                $this->linkTags($recipe_id, $tag_ids);
 
-                if ($ingredient_ids !== []) {
-                    $ingredientStatement = $this->recepies->prepare(
-                        "INSERT INTO recipe_ingredient (recipe_id, ingredient_id)
-                         VALUES (:recipe_id, :ingredient_id)"
-                    );
-
-                    if ($ingredientStatement === false) {
-                        $this->recepies->rollBack();
-                        return false;
-                    }
-
-                    foreach ($ingredient_ids as $ingredient_id) {
-                        $ingredientStatement->execute([
-                            ":recipe_id" => $recipe_id,
-                            ":ingredient_id" => $ingredient_id
-                        ]);
-                    }
-                }
-
-                if ($tag_ids !== []) {
-                    $tagStatement = $this->recepies->prepare(
-                        "INSERT INTO recipe_tag (recipe_id, tag_id)
-                         VALUES (:recipe_id, :tag_id)"
-                    );
-
-                    if ($tagStatement === false) {
-                        $this->recepies->rollBack();
-                        return false;
-                    }
-
-                    foreach ($tag_ids as $tag_id) {
-                        $tagStatement->execute([
-                            ":recipe_id" => $recipe_id,
-                            ":tag_id" => $tag_id
-                        ]);
-                    }
-                }
-
-                $this->recepies->commit();
+                $this->pdo->commit();
                 return true;
             } catch (\Exception $e) {
-                if ($this->recepies->inTransaction()) {
-                    $this->recepies->rollBack();
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
                 }
 
                 return false;
@@ -224,14 +222,14 @@ class RecepieDB
         int $id,
         string $title,
         string $description,
-        array $ingredient_ids = [],
-        array $tag_ids = [],
+        array $ingredients = [],
+        array $tags = [],
         ?string $image_url = null,
         ?int $preparation_time = null,
         ?int $cooking_time = null,
         ?int $servings = null
     ): bool {
-        $statement = $this->recepies->prepare(
+        $statement = $this->pdo->prepare(
             "UPDATE recipe
              SET title = :title,
                  description = :description,
@@ -244,7 +242,18 @@ class RecepieDB
 
         if ($statement !== false) {
             try {
-                $this->recepies->beginTransaction();
+                $ingredient_ids = [];
+                $tag_ids = [];
+
+                foreach ($ingredients as $ingredientName) {
+                    $ingredient_ids[] = (new IngredientDB())->getOrCreateIngredientIdByName((string) $ingredientName);
+                }
+
+                foreach ($tags as $tagName) {
+                    $tag_ids[] = (new TagDB())->getOrCreateTagIdByName((string) $tagName);
+                }
+
+                $this->pdo->beginTransaction();
 
                 $statement->execute([
                     ":id" => $id,
@@ -256,70 +265,26 @@ class RecepieDB
                     ":servings" => $servings
                 ]);
 
-                $deleteIngredientStatement = $this->recepies->prepare(
+                $this->pdo->prepare(
                     "DELETE FROM recipe_ingredient WHERE recipe_id = :recipe_id"
-                );
+                )->execute([
+                    ":recipe_id" => $id
+                ]);
 
-                $deleteTagStatement = $this->recepies->prepare(
+                $this->pdo->prepare(
                     "DELETE FROM recipe_tag WHERE recipe_id = :recipe_id"
-                );
-
-                if ($deleteIngredientStatement === false || $deleteTagStatement === false) {
-                    $this->recepies->rollBack();
-                    return false;
-                }
-
-                $deleteIngredientStatement->execute([
+                )->execute([
                     ":recipe_id" => $id
                 ]);
 
-                $deleteTagStatement->execute([
-                    ":recipe_id" => $id
-                ]);
+                $this->linkIngredients($id, $ingredient_ids);
+                $this->linkTags($id, $tag_ids);
 
-                if ($ingredient_ids !== []) {
-                    $ingredientStatement = $this->recepies->prepare(
-                        "INSERT INTO recipe_ingredient (recipe_id, ingredient_id)
-                         VALUES (:recipe_id, :ingredient_id)"
-                    );
-
-                    if ($ingredientStatement === false) {
-                        $this->recepies->rollBack();
-                        return false;
-                    }
-
-                    foreach ($ingredient_ids as $ingredient_id) {
-                        $ingredientStatement->execute([
-                            ":recipe_id" => $id,
-                            ":ingredient_id" => $ingredient_id
-                        ]);
-                    }
-                }
-
-                if ($tag_ids !== []) {
-                    $tagStatement = $this->recepies->prepare(
-                        "INSERT INTO recipe_tag (recipe_id, tag_id)
-                         VALUES (:recipe_id, :tag_id)"
-                    );
-
-                    if ($tagStatement === false) {
-                        $this->recepies->rollBack();
-                        return false;
-                    }
-
-                    foreach ($tag_ids as $tag_id) {
-                        $tagStatement->execute([
-                            ":recipe_id" => $id,
-                            ":tag_id" => $tag_id
-                        ]);
-                    }
-                }
-
-                $this->recepies->commit();
+                $this->pdo->commit();
                 return true;
             } catch (\Exception $e) {
-                if ($this->recepies->inTransaction()) {
-                    $this->recepies->rollBack();
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
                 }
 
                 return false;
@@ -332,7 +297,7 @@ class RecepieDB
     // Supprimer une recette
     public function deleteRecepie(int $id): bool
     {
-        $statement = $this->recepies->prepare(
+        $statement = $this->pdo->prepare(
             "DELETE FROM recipe WHERE id = :id"
         );
 
@@ -350,3 +315,4 @@ class RecepieDB
         return $this->getRecepiesByTitle($titles);
     }
 }
+
