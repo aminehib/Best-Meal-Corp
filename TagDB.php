@@ -2,60 +2,33 @@
 
 namespace gdb;
 
-// Classe pour gérer les tags dans la base de données
-class TagDB
-{
-    // Variable pour la connexion à la base
-    private \PDO $pdo;
-
-    // Constructeur : se connecte à la base dès qu'on crée l'objet
-    public function __construct()
-    {
-        $db_name = "bestmeal";
-        $db_host = "127.0.0.1";
-        $db_port = "3307";
-        $db_user = "root";
-        $db_pwd = "";
-
-        try {
-            // Connexion à MySQL avec PDO
-            $dsn = "mysql:dbname=$db_name;host=$db_host;port=$db_port;charset=utf8";
-            $this->pdo = new \PDO($dsn, $db_user, $db_pwd);
-
-            // Permet d'afficher les erreurs SQL
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-        } catch (\Exception $e) {
-            // Si la connexion échoue
-            die("Erreur connexion : " . $e->getMessage());
-        }
-    }
-
-    // Récupère tous les tags de la table
+require_once __DIR__ . "/DB.php";
+// Classe pour gerer les tags dans la base de donnees
+class TagDB extends DB{
+    // Recupere tous les tags de la table
     public function getAllTags(): array
     {
         $statement = $this->pdo->prepare("SELECT * FROM tag");
 
         if ($statement !== false) {
-            $statement->execute(); // exécute la requête
-            return $statement->fetchAll(\PDO::FETCH_OBJ); // retourne tous les résultats
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_OBJ);
         }
 
         return [];
     }
 
-    // Récupère un tag en fonction de son id
+    // Recupere un tag en fonction de son id
     public function getById(int $id): object|null
     {
         $statement = $this->pdo->prepare("SELECT * FROM tag WHERE id = :id");
 
         if ($statement !== false) {
-            // on passe la valeur de l'id de manière sécurisée
             $statement->execute([
                 ":id" => $id
             ]);
 
-            $result = $statement->fetch(\PDO::FETCH_OBJ); // un seul résultat
+            $result = $statement->fetch(\PDO::FETCH_OBJ);
             return $result ?: null;
         }
 
@@ -91,7 +64,6 @@ class TagDB
         );
 
         if ($statement !== false) {
-            // exécute la requête avec le nom donné
             return $statement->execute([
                 ":name" => $name
             ]);
@@ -100,7 +72,48 @@ class TagDB
         return false;
     }
 
-    // Modifie le nom d’un tag existant
+    public function getOrCreateTagIdByName(string $name): int
+    {
+        $normalizedName = trim($name);
+
+        if ($normalizedName === '') {
+            throw new \InvalidArgumentException("Le nom du tag ne peut pas etre vide.");
+        }
+
+        $statement = $this->pdo->prepare(
+            "SELECT id FROM tag WHERE name = :name LIMIT 1"
+        );
+
+        if ($statement === false) {
+            throw new \Exception("Erreur preparation recherche tag");
+        }
+
+        $statement->execute([
+            ":name" => $normalizedName
+        ]);
+
+        $tagId = $statement->fetchColumn();
+
+        if ($tagId !== false) {
+            return (int) $tagId;
+        }
+
+        $insertStatement = $this->pdo->prepare(
+            "INSERT INTO tag (name) VALUES (:name)"
+        );
+
+        if ($insertStatement === false) {
+            throw new \Exception("Erreur preparation ajout tag");
+        }
+
+        $insertStatement->execute([
+            ":name" => $normalizedName
+        ]);
+
+        return (int) $this->pdo->lastInsertId();
+    }
+
+    // Modifie le nom d'un tag existant
     public function updateTag(int $id, string $name): bool
     {
         $statement = $this->pdo->prepare(
@@ -117,7 +130,7 @@ class TagDB
         return false;
     }
 
-    // Supprime un tag grâce à son id
+    // Supprime un tag grace a son id
     public function deleteTag(int $id): bool
     {
         $statement = $this->pdo->prepare(
@@ -132,4 +145,25 @@ class TagDB
 
         return false;
     }
+
+    public function rechercherTag(string|array $names): array
+    {
+        return $this->getTagByName($names);
+    }
+
+    public function removeTagLink(int $tag_id): bool
+    {
+        $statement = $this->pdo->prepare(
+            "DELETE FROM recipe_tag WHERE tag_id = :tag_id"
+        );
+
+        if ($statement !== false) {
+            return $statement->execute([
+                ":tag_id" => $tag_id
+            ]);
+        }
+
+        return false;
+    }
+
 }
