@@ -440,15 +440,16 @@ body {
 
 /* Formulaire avancé */
 .search-form {
-    display: flex; 
-    gap: 20px; 
-    flex-wrap: wrap; /* Retour à la ligne */
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
 }
 
 /* Groupe label + input */
-.form-group {
-    flex: 1; /* Largeur flexible */
-    min-width: 220px; 
+.search-form .form-group {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
 }
 
 /* Label */
@@ -471,11 +472,18 @@ body {
     background-color: white;
     box-shadow: none;
 }
+
+.search-form .form-group .selectize-control,
+.search-form .form-group .selectize-input {
+    width: 100%;
+    max-width: 100%;
+}
 /* Zone des boutons */
 .form-actions {
     width: 100%; 
     text-align: center; 
     margin-top: 10px; /* Espace en haut */
+    grid-column: 1 / -1;
 }
 
 
@@ -983,6 +991,15 @@ body {
     padding: 6px 0;
 }
 
+.recipe-submit-bar {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.recipe-submit-bar .recipe-form-btn {
+    align-self: center;
+}
+
 .admin-recipe-page .section-head {
     justify-content: flex-start;
     margin-bottom: 14px;
@@ -1057,3 +1074,4 @@ body {
 .pantry-tag-row .recette-tags {
     margin-top: 10px;
 }
+
