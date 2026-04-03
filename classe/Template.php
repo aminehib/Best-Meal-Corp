@@ -94,10 +94,11 @@ $(document).ready(function() {
     });
 });
 </script>
-</body>
-</html>
 
 <?php include $_SERVER['DOCUMENT_ROOT'].'/ProjetWeb/pages/includes/footer.php'; ?>
+
+</body>
+</html>
 
 </html>
 

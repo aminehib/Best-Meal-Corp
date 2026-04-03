@@ -25,7 +25,7 @@
                     <div class="section-head">
                         <h2>Ingredients</h2>
                         <?php if(isset($_SESSION["login"])): ?>
-                            <button type="button" class="pantry-add-btn" data-add-type="ingredient" title="Ajouter un ingredient">+</button>
+                            <button type="button" class="pantry-add-btn" data-add-type="ingredient" title="Ajouter un ingrédient">Ajouter</button>
                         <?php endif; ?>
                     </div>
                     <div class="pantry-list" id="pantry-ingredient-list">
@@ -48,7 +48,10 @@
                                 <div class="editable-header">
                                     <h3><?= $ingredient->name ?></h3>
                                     <?php if(isset($_SESSION["login"]) ): ?>
-                                        <a href="#" class="edit-inline-btn" data-target="pantry-name-form-<?= $ingredient->id ?>" title="Modifier le nom">✎</a>
+                                        <div class="button-group">
+                                            <a href="#" class="edit-inline-btn" data-target="pantry-name-form-<?= $ingredient->id ?>" title="Modifier le nom">✎</a>
+                                            <a href="/ProjetWeb/actions/delete_Ingredient.php?id=<?= $ingredient->id ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer l'ingrédient" onclick="return confirm('Supprimer cet ingrédient ?');">🗑</a>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
                                         <?php if(isset($_SESSION["login"])): ?>
@@ -72,7 +75,7 @@
                      <div class="section-head">
                         <h2>Tags</h2>
                         <?php if(isset($_SESSION["login"])): ?>
-                            <button type="button" class="pantry-add-btn" data-add-type="tag" title="Ajouter un tag">+</button>
+                            <button type="button" class="pantry-add-btn" data-add-type="tag" title="Ajouter un tag">Ajouter</button>
                         <?php endif; ?>
                     </div>
 
@@ -85,9 +88,10 @@
                                 <h3><?= $tag->name ?></h3>
                                 <?php if(isset($_SESSION["login"])): ?>
                                     <a href="#" class="edit-inline-btn" data-target="tag-form-<?= $tag->id ?>" title="Modifier le tag">✎</a>
+                                    <a href="/ProjetWeb/actions/delete_Tag.php?id=<?= $tag->id ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer le tag" onclick="return confirm('Supprimer ce tag ?');">🗑</a>
                                 <?php endif; ?>
                             </div>
-                                <?php if(isset($_SESSION["login"])): ?>
+                            <?php if(isset($_SESSION["login"])): ?>
                             <form action="/ProjetWeb/actions/update_Tag.php" method="GET" class="recipe-edit-form is-hidden" data-form-id="tag-form-<?= $tag->id ?>">
                                 <input type="hidden" name="id" value="<?= $tag->id ?>">
                                 <input type="text" name="name" value="<?= $tag->name ?>" class="recipe-text-input">
