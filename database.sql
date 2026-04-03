@@ -5,17 +5,18 @@ CREATE TABLE recipe (
     description TEXT,
     image_url VARCHAR(255),
     preparation_time INT,
+    preparation LONGTEXT,
     cooking_time INT,
     servings INT, --nombre de portions/personnes
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, --date+heure  type date et heure 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- se met a jour automatiquement 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, --date+heure  type date et heure
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- se met a jour automatiquement
 );
 
-INSERT INTO recipe (title, description, preparation_time, cooking_time, servings)
-VALUES 
-('Tarte aux pommes', 'Très bonne tarte maison', 20, 30, 6),
-('Pizza maison', 'Pizza simple et rapide', 15, 20, 4),
-('Couscous', 'Plat traditionnel', 40, 60, 5);
+INSERT INTO recipe (title, description, preparation_time, preparation, cooking_time, servings)
+VALUES
+('Tarte aux pommes', 'Tres bonne tarte maison', 20, 'Eplucher les pommes, preparer la pate puis disposer les tranches avant cuisson.', 30, 6),
+('Pizza maison', 'Pizza simple et rapide', 15, 'Etaler la pate, ajouter la sauce et la garniture puis enfourner.', 20, 4),
+('Couscous', 'Plat traditionnel', 40, 'Preparer les legumes, cuire la semoule et assembler avec le bouillon.', 60, 5);
 
 -- Table ingredient
 CREATE TABLE ingredient (
@@ -41,9 +42,8 @@ CREATE TABLE recipe_ingredient (
     quantity DECIMAL(10,2),-- 2 chiffre apres la ,
     unit VARCHAR(50),
     notes VARCHAR(255),
-    
+
     PRIMARY KEY (recipe_id, ingredient_id),
-    --recipe_id doit correspondre à un id existant dans la table recipe.
     FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE,
     FOREIGN KEY (ingredient_id) REFERENCES ingredient(id) ON DELETE CASCADE
 );
@@ -52,9 +52,10 @@ CREATE TABLE recipe_ingredient (
 CREATE TABLE recipe_tag (
     recipe_id INT,
     tag_id INT,
-    
+
     PRIMARY KEY (recipe_id, tag_id),
-    
+
     FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE
 );
+
