@@ -165,5 +165,27 @@ class TagDB extends DB{
 
         return false;
     }
+    
+   public function getTags($id): array {
+
+    $statement = $this->pdo->prepare(
+        "SELECT t.* 
+         FROM tag t 
+         INNER JOIN recipe_tag rt ON t.id = rt.tag_id 
+         INNER JOIN recipe r ON r.id = rt.recipe_id 
+         WHERE r.id = :id"
+    );
+
+    if ($statement !== false) {
+        $statement->execute([
+            'id' => $id
+        ]);
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Tag");
+    }
+
+    return [];
+}
+
 
 }
