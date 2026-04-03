@@ -28,14 +28,21 @@
                     <div class="recette-info">
                         <span class="page-subtitle">D&eacute;tail de la recette</span>
 
+                        <div class="section-head">
+                            <span class="section-edit-title">Titre</span>
+                        </div>
                         <div class="editable-header">
                             <h1>Pizza Maison</h1>
                             <a href="#" class="edit-inline-btn" data-target="title-panel" title="Modifier le titre">✎</a>
                         </div>
                         <div class="recipe-edit-form is-hidden" data-panel-id="title-panel">
-                            <input type="text" name="title" value="Pizza Maison" class="recipe-title-input">
+                            <label for="recipe-title-input" class="recipe-form-label">Titre</label>
+                            <input id="recipe-title-input" type="text" name="title" value="Pizza Maison" class="recipe-title-input">
                         </div>
 
+                        <div class="section-head">
+                            <span class="section-edit-title">Description</span>
+                        </div>
                         <div class="editable-block">
                             <p class="recette-description">
                                 Une pizza savoureuse pr&eacute;par&eacute;e avec des ingr&eacute;dients frais, une p&acirc;te croustillante
@@ -44,7 +51,8 @@
                             <a href="#" class="edit-inline-btn" data-target="description-panel" title="Modifier la description">✎</a>
                         </div>
                         <div class="recipe-edit-form is-hidden" data-panel-id="description-panel">
-                            <textarea name="description" class="recipe-description-input">Une pizza savoureuse pr&eacute;par&eacute;e avec des ingr&eacute;dients frais, une p&acirc;te croustillante et une garniture riche en saveurs. Parfaite pour un repas convivial en famille.</textarea>
+                            <label for="recipe-description-input" class="recipe-form-label">Description</label>
+                            <textarea id="recipe-description-input" name="description" class="recipe-description-input">Une pizza savoureuse pr&eacute;par&eacute;e avec des ingr&eacute;dients frais, une p&acirc;te croustillante et une garniture riche en saveurs. Parfaite pour un repas convivial en famille.</textarea>
                         </div>
 
                         <div class="editable-section">
@@ -72,15 +80,15 @@
                                 <div class="recette-meta">
                                     <div class="meta-item">
                                         <label for="prep_time" class="meta-label">Temps de pr&eacute;paration</label>
-                                        <input type="text" id="prep_time" name="prep_time" value="20 min" class="recipe-text-input">
+                                        <input id="prep_time" type="text" name="prep_time" value="20 min" class="recipe-text-input">
                                     </div>
                                     <div class="meta-item">
                                         <label for="cook_time" class="meta-label">Temps de cuisson</label>
-                                        <input type="text" id="cook_time" name="cook_time" value="25 min" class="recipe-text-input">
+                                        <input id="cook_time" type="text" name="cook_time" value="25 min" class="recipe-text-input">
                                     </div>
                                     <div class="meta-item">
                                         <label for="servings" class="meta-label">Nombre de personnes</label>
-                                        <input type="text" id="servings" name="servings" value="4 personnes" class="recipe-text-input">
+                                        <input id="servings" type="text" name="servings" value="4 personnes" class="recipe-text-input">
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +167,6 @@
                     <button type="submit" class="recipe-form-btn">Enregistrer toute la recette</button>
                 </div>
             </form>
-
         </div>
     </section>
 </main>
