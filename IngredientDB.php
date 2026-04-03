@@ -151,5 +151,26 @@ class IngredientDB extends DB{
     {
         return $this->getIngredientByName($names);
     }
+    
+    public function getIngredients(int $id):array{
+
+    $statement = $this->pdo->prepare(
+        "SELECT ing.* 
+         FROM ingredient ing 
+         INNER JOIN recipe_ingredient ri ON ing.id = ri.ingredient_id
+         INNER JOIN recipe r ON r.id = ri.recipe_id
+         WHERE r.id = :id"
+    );
+
+    if($statement !== false){
+        $statement->execute([
+            'id' => $id
+        ]);
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Ingredient");
+    }
+
+    return [];
+}
 }
 
