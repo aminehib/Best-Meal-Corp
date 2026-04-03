@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("/projet-recette/images/login.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.login-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-form {
+    background-color: rgba(255, 255, 255, 0.92);
+    padding: 35px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-form h1 {
+    text-align: center;
+    color: #111;
+    font-size: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #111;
+}
+
+.form-group input {
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.login-form button {
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background-color: #d35400;
+    color: white;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: #b84700;
+}
+
+.input-error {
+    border-color: #e74c3c !important;
+}
+
+.field-error {
+    color: #e74c3c;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: -6px;
+}
