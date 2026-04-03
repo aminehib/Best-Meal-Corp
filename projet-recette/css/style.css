@@ -1,0 +1,1091 @@
+
+* {
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box; /* Inclut padding et border dans la taille */
+}
+
+
+body {
+    font-family: Arial, sans-serif; 
+    background-color: #f5f5f5; 
+    color: #111; 
+}
+
+/* Conteneur principal centré */
+.container {
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 0 auto; /* Centre horizontalement */
+}
+
+/* Header */
+.site-header {
+    background-color: white; 
+    border-bottom: 1px solid #ddd; 
+    padding: 20px 0; /* Espace vertical */
+}
+
+/* Organisation interne du header */
+.header-container {
+    display: flex; /* Alignement flexible */
+    justify-content: space-between; /* Espace entre les blocs */
+    align-items: center;/* Centre verticalement */
+}
+
+/* Lien du logo */
+.logo-link {
+    display: flex; 
+    align-items: center; 
+    text-decoration: none;  
+    gap: 10px; /* Espace entre logo et texte */
+}
+
+/* Image du logo */
+.logo {
+    width: 80px; 
+    height: auto; 
+}
+
+/* Nom du site */
+.site-name {
+    font-size: 24px; 
+    color: #c05f1e; 
+    font-weight: bold; /* en gras */
+}
+
+/* Liste de navigation */
+.nav-list {
+    list-style: none; /* Enlève les puces */
+    display: flex;
+    gap: 25px; 
+}
+
+/* Liens de navigation */
+.nav-link {
+    text-decoration: none; /* Enlève le soulignement */
+    color: #111; 
+    font-weight: bold; 
+}
+
+/* Hover et lien actif */
+.nav-link:hover,
+.nav-link.active {
+    color: #d35400; /* Change la couleur au survol */
+}
+
+/* Bouton Admin */
+.admin-btn {
+    text-decoration: none;
+    background-color: #111; 
+    color: white; 
+    padding: 10px 20px; /* Espace interne */
+    border-radius: 20px; /* Coins arrondis */
+}
+
+/* Zone principale */
+.main-content {
+    padding: 40px 0; /* Espace vertical */
+}
+
+/* Section hero */
+.hero {
+    padding: 50px 0; /* Espace vertical */
+}
+
+/* Contenu du hero */
+.hero-container {
+    display: flex; /* en ligne */
+    justify-content: space-between; /* Espace entre texte et image */
+    align-items: center; /* Alignement vertical */
+    gap: 40px; 
+}
+
+/* Partie texte du hero */
+.hero-text {
+    width: 50%; 
+}
+
+
+.hero-subtitle {
+    color: #d35400; 
+    font-weight: bold; 
+    display: block; /* Sur une ligne */
+    margin-bottom: 15px; 
+}
+
+/* Grand titre principal */
+.hero-text h1 {
+    font-size: 48px; 
+    margin-bottom: 20px;
+}
+
+/* Paragraphe du hero */
+.hero-text p {
+    font-size: 18px; /* Taille du texte */
+    margin-bottom: 25px; /* Espace en bas */
+    color: #555; /* Gris foncé */
+}
+
+/* Bloc des boutons */
+.hero-buttons {
+    display: flex; /* Boutons sur une ligne */
+    gap: 20px;
+}
+
+/* Style commun des boutons */
+.btn {
+    text-decoration: none; 
+    padding: 12px 22px; /* Espace interne */
+    border-radius: 25px; /* Coins arrondis */
+    font-weight: bold; 
+}
+
+
+.btn-primary {
+    background-color: #d35400; /* Fond orange */
+    color: white; /* Texte blanc */
+    
+}
+
+
+.btn-secondary {
+    color: #111; 
+    background-color: white; 
+}
+
+.hero-image img {
+    width: 350px;
+    height: auto;
+}
+
+/* Section features */
+.features {
+    padding: 50px 0; /* Espace vertical */
+}
+
+/* h2 et p */
+.section-title {
+    text-align: center; /* Centre le texte */
+    margin-bottom: 30px; 
+}
+
+
+.section-title h2 {
+    font-size: 36px; 
+    margin-bottom: 10px; 
+}
+
+
+.section-title p {
+    color: #666; 
+}
+
+/* Grille des cartes */
+.features-grid {
+    display: flex; 
+    gap: 20px; 
+}
+
+/* Carte individuelle */
+.feature-card {
+    background-color: white; 
+    padding: 25px; /* Espace interne */
+    border-radius: 10px; 
+    flex: 1; /*  carte prend la même place */
+    border: 1px solid #ddd; /* Bordure légère */
+}
+
+
+.feature-card h3 {
+    margin-bottom: 15px; 
+}
+
+
+.feature-card p {
+    color: #555;
+}
+
+/* Section discover */
+.discover {
+    padding: 50px 0; /* Espace vertical */
+}
+
+/* Bloc noir */
+.discover-box {
+    background-color: #111; 
+    color: white; 
+    text-align: center; 
+    padding: 40px; /* Espace interne */
+    border-radius: 15px; 
+}
+
+
+.discover-box h2 {
+    margin-bottom: 15px; 
+    font-size: 36px; 
+}
+
+.discover-box p {
+    margin-bottom: 20px; 
+}
+
+/* Bouton blanc dans bloc noir */
+.discover-box .btn-primary {
+    background-color: white; /* Fond blanc */
+    color: #111; /* Texte noir */
+}
+.discover-box .hero-buttons {
+    justify-content: center;
+}
+/* Footer */
+.site-footer {
+    background-color: #111; 
+    color: white;
+    text-align: center; 
+    padding: 20px 0; 
+    margin-top: 40px; /* Espace avant footer */
+}
+
+
+.site-footer p {
+    margin: 5px 0; /* espace vertical */
+}
+
+/* Page recettes */
+.recettes-page {
+    padding: 50px 0; 
+}
+
+/* Bloc titre page */
+.page-title {
+    text-align: center; 
+    margin-bottom: 40px;
+}
+
+/* Sous-titre de page */
+.page-subtitle {
+    display: block; /* Passe à la ligne */
+    color: #d35400; 
+    font-weight: bold; 
+    margin-bottom: 10px; 
+}
+
+/* Titre principal de page */
+.page-title h1 {
+    font-size: 36px;
+    margin-bottom: 10px; /* Espace en bas */
+}
+
+
+.page-title p {
+    color: #666;
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto; /* Centrage */
+}
+
+/* Liste des recettes */
+.recettes-list {
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+    gap: 20px;
+}
+
+/* Carte recette */
+.recepie {
+    background-color: white;
+    border: 1px solid #ddd; /* Bordure légère */
+    border-radius: 12px; /* Coins arrondis */
+    padding: 20px; 
+    text-align: center;
+}
+
+/* Image de recette */
+.recepie img {
+    width: 100%; 
+    height: 220px; 
+    object-fit: cover; /* Coupe l’image proprement */
+    border-radius: 10px; 
+    margin-bottom: 15px; 
+}
+
+/* Titre de recette */
+.recepie h2 {
+    font-size: 22px; 
+    margin-bottom: 10px; 
+    color: #111; 
+}
+
+/* Texte recette */
+.recepie p {
+    color: #555; 
+    margin-bottom: 15px; 
+    font-size: 16px; 
+}
+
+/* Page détail recette */
+.recette-page {
+    padding: 50px 0; 
+}
+
+/* Page recette*/
+.recette-top {
+    display: flex; 
+    gap: 30px; 
+    margin-bottom: 40px;
+}
+
+/* Colonnes image / infos */
+.recette-image,
+.recette-info {
+    flex: 1; /* Même largeur */
+}
+
+/* Image principale recette */
+.recette-image img {
+    width: 100%; 
+    height: 400px; /* Hauteur fixe */
+    object-fit: cover; /* Ajustement propre */
+    border-radius: 12px; 
+}
+
+/* Titre recette */
+.recette-info h1 {
+    font-size: 36px; 
+    margin: 10px 0 20px; /* Espaces autour */
+}
+
+/* Description recette */
+.recette-description {
+    font-size: 18px; 
+    color: #555; 
+    margin-bottom: 20px;
+}
+
+/* Bloc des tags */
+.recette-tags {
+    display: flex; /* en ligne */
+    gap: 10px; 
+    flex-wrap: wrap; /* Retour à la ligne si besoin */
+}
+
+/* Tag individuel */
+.recette-tags span {
+    background-color: #f1f1f1; 
+    padding: 8px 14px; /* Espace interne */
+    border-radius: 20px; 
+    font-size: 14px; 
+    font-weight: bold; 
+}
+
+/* Contenu bas de la recette */
+.recette-content {
+    display: flex;
+    gap: 20px; 
+    margin-bottom: 50px; 
+}
+
+/* Boîtes ingrédients et préparation */
+.ingredients-box,
+.preparation-box {
+    flex: 1; /* Même largeur */
+    background-color: white;
+    border: 1px solid #ddd; /* Bordure légère */
+    border-radius: 12px; 
+    padding: 25px; /* Espace interne */
+}
+
+/* Titres des boîtes */
+.ingredients-box h2,
+.preparation-box h2 {
+    margin-bottom: 15px; 
+    font-size: 24px;
+}
+
+/* Liste ingrédients */
+.ingredients-box ul {
+    padding-left: 20px; /* Décalage à gauche */
+}
+
+/* Élément de liste */
+.ingredients-box li {
+    margin-bottom: 10px; 
+}
+
+/* Texte préparation */
+.preparation-box p {
+    color: #555; 
+    line-height: 1.7; /* Hauteur de ligne */
+}
+
+/* retour aux recettes */
+.recette-actions {
+    text-align: center; /* Centre les boutons */
+}
+
+/*  recherche */
+.recherche-page {
+    padding: 50px 0; /* Espace vertical */
+}
+
+/* Bloc du formulaire */
+.search-form-box {
+    background-color: white;
+    border: 1px solid #ddd; /* Bordure */
+    border-radius: 12px; 
+    padding: 30px; 
+    margin-bottom: 40px; 
+}
+
+/* Formulaire avancé */
+.search-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* Groupe label + input */
+.search-form .form-group {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+/* Label */
+.form-group label {
+    display: block; /* Sur une ligne */
+    margin-bottom: 8px; /* Espace en bas */
+    font-weight: bold; /* Gras */
+    color: #111; /* Noir */
+}
+
+/* Champ de saisie */
+.form-group input {
+    width: 100%;
+    min-height: 45px; /* Remplace le height: 19px qui posait problème */
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Garde les jolis coins arrondis */
+    font-size: 15px;
+    line-height: 1.4;
+    background-color: white;
+    box-shadow: none;
+}
+
+.search-form .form-group .selectize-control,
+.search-form .form-group .selectize-input {
+    width: 100%;
+    max-width: 100%;
+}
+/* Zone des boutons */
+.form-actions {
+    width: 100%; 
+    text-align: center; 
+    margin-top: 10px; /* Espace en haut */
+    grid-column: 1 / -1;
+}
+
+
+/*temps de préparation et cuisson et nombre de personnes*/
+.recette-meta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.meta-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px 16px;
+    min-width: 180px;
+}
+
+.meta-label {
+    display: block;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.meta-value {
+    font-weight: bold;
+    color: #111;
+}
+.selectize-control {
+    width: 100%;
+}
+
+.selectize-input {
+    min-height: 45px;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-shadow: none;
+    background: white;
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: center;
+    gap: 8px;
+}
+.selectize-input input {
+    font-size: 15px !important;
+}
+
+.selectize-control.multi .selectize-input > div {
+    margin: 0;
+}
+.selectize-control.multi .selectize-input.has-items {
+    padding: 10px 14px;
+}
+.selectize-control.multi .selectize-input [data-value]{
+   white-space: normal;
+   max-width: 100%;
+}
+
+
+.selectize-dropdown {
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+/* PAGE FORMULAIRE ADMIN */
+.form-page {
+    padding: 50px 0;
+}
+
+.admin-form-box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.admin-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 220px;
+}
+
+.full-width {
+    width: 100%;
+    flex: 0 0 100%;
+}
+
+.form-group textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    background-color: white;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 15px;
+}
+.selectize-control.multi .selectize-input > div.item {
+    background: #27ae60 !important;
+    color: white !important;
+    border: 1px solid #219653 !important;
+    border-radius: 5px !important;
+    text-shadow: none !important;
+}
+
+
+/* ===== Mode admin recette ===== */
+
+.admin-block {
+    position: relative;
+}
+
+.admin-recipe-page .recette-top {
+    align-items: flex-start;
+}
+
+.edit-zone-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #f39c12;
+    color: white;
+    border-radius: 50%;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
+    z-index: 5;
+}
+
+/* 1. Comportement par défaut : le bouton est repoussé tout à droite (space-between) */
+.editable-header,
+.editable-block,
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+/* 2. EXCEPTION : On colle le bouton au texte (flex-start) UNIQUEMENT pour :
+   - Le Titre (.editable-header)
+   - Les titres "Informations" et "Tags" (qui sont dans la zone .recette-info) */
+.editable-header,
+.recette-info .section-head {
+    justify-content: flex-start;
+}
+
+.editable-header {
+    margin-bottom: 10px;
+}
+
+.editable-block {
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.editable-block .recette-description {
+    margin-bottom: 0;
+}
+
+.editable-section {
+    margin-bottom: 20px;
+}
+
+.section-head {
+    margin-bottom: 12px;
+}
+
+.section-edit-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #111;
+}
+
+.edit-inline-btn {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #f39c12;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.edit-zone-btn:hover,
+.edit-inline-btn:hover {
+    background-color: #d68910;
+}
+
+.pantry-remove-btn {
+    border: none;
+    background-color: #d35400;
+    cursor: pointer;
+}
+
+.pantry-remove-btn:hover {
+    background-color: #b94700;
+}
+
+.editing-field {
+    outline: 2px solid #f39c12;
+    background-color: #fff8ef;
+    border-radius: 6px;
+    padding: 4px 6px;
+}
+
+.edit-inline-btn.editing {
+    background-color: #f39c12;
+}
+
+.edit-inline-btn.editing:hover {
+    background-color: #d68910;
+}
+
+.recipe-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.recipe-edit-form.is-hidden {
+    display: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.recipe-edit-form:first-of-type {
+    margin-top: 8px;
+}
+
+.recipe-form-label {
+    display: block;
+    font-weight: bold;
+    color: #111;
+    font-size: 15px;
+}
+
+.recipe-text-input,
+.recipe-textarea,
+.recipe-select,
+.recipe-edit-form input[type="file"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: white;
+}
+
+.recipe-textarea {
+    min-height: 140px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.recipe-title-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 36px;
+    font-weight: bold;
+    color: #111;
+    padding: 0;
+    margin: 10px 0 0;
+}
+
+.recipe-description-input {
+    width: 100%;
+    min-height: 110px;
+    border: 1px solid #ccc;
+    background: white;
+    color: #555;
+    font-size: 18px;
+    line-height: 1.7;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    padding: 12px 14px;
+}
+
+.recipe-select {
+    min-height: 120px;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    padding: 8px;
+}
+
+.recipe-select option {
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+.recipe-select-large {
+    min-height: 220px;
+}
+
+.recipe-form-btn {
+    align-self: flex-start;
+    border: none;
+    border-radius: 25px;
+    background-color: #d35400;
+    color: white;
+    padding: 12px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.recipe-form-btn:hover {
+    background-color: #b94700;
+}
+
+.recette-image.admin-block {
+    position: relative;
+    cursor: pointer;
+}
+
+.recette-image.admin-block .image-form {
+    position: absolute;
+    inset: auto;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.hidden-file-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.recipe-meta-form .meta-item {
+    flex: 1;
+    min-width: 180px;
+}
+
+.recipe-meta-form .meta-item {
+    padding: 12px 16px;
+}
+
+.recipe-meta-form .meta-label {
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.recipe-meta-form .recipe-text-input {
+    min-height: auto;
+    border: none;
+    padding: 0;
+    background: transparent;
+    font-weight: bold;
+    font-size: 18px;
+    color: #111;
+}
+
+.recipe-tags-form {
+    margin-top: 0;
+}
+
+.recipe-tags-form .recipe-select {
+    min-height: 80px;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.recipe-content-form {
+    margin-top: 0;
+}
+
+.recipe-content-form .recipe-select,
+.recipe-content-form .recipe-textarea {
+    box-shadow: none;
+}
+
+.recipe-content-form .recipe-select option {
+    padding: 6px 0;
+}
+
+.recipe-submit-bar {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.recipe-submit-bar .recipe-form-btn {
+    align-self: center;
+}
+
+.admin-recipe-page .section-head {
+    justify-content: flex-start;
+    margin-bottom: 14px;
+}
+
+.pantry-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.pantry-section {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.pantry-section > .section-head {
+    margin-bottom: 18px;
+}
+
+.pantry-list,
+.pantry-tag-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.pantry-row,.pantry-tag-row {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 18px;
+    background-color: #fafafa;
+}
+
+.pantry-tag-row .section-head {
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 0;
+}
+
+.pantry-tag-add {
+    background-color: white;
+}
+
+.pantry-add-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background-color: #d35400;
+    color: white;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.pantry-add-btn:hover {
+    background-color: #b94700;
+}
+
+.pantry-row {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+}
+
+.pantry-row-image {
+    width: 180px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.pantry-row-image img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.pantry-row-content {
+    flex: 1;
+}
+
+.pantry-create-form {
+    width: 100%;
+}
+
+.pantry-create-form-ingredient {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.pantry-placeholder-box {
+    border: 1px dashed #d35400;
+    border-radius: 12px;
+    padding: 12px;
+    background-color: #fff7f0;
+}
+
+.pantry-inline-form {
+    margin-top: 0;
+}
+
+.pantry-inline-label {
+    display: block;
+    margin: 12px 0 8px;
+    font-weight: bold;
+    color: #111;
+}
+
+.pantry-row-new .editable-header,
+.pantry-tag-add .section-head {
+    margin-bottom: 12px;
+}
+
+.pantry-form-actions {
+    margin-top: 14px;
+}
+
+.pantry-delete-link {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #fff1ef;
+    border: 1px solid #f2b8b2;
+    color: white;
+    border-radius: 10px;
+    font-size: 18px;
+    flex-shrink: 0;
+    font-family: "Segoe UI Symbol", sans-serif;
+    color: #c0392b;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pantry-delete-link:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+    color: white;
+}
+
+.pantry-row h3,
+.pantry-tag-row h3 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.pantry-row-content .editable-header h3,
+.pantry-tag-row .section-head h3 {
+    margin-right: auto;
+}
+
+.pantry-tag-row .recette-tags {
+    margin-top: 10px;
+}
+
+.input-error {
+    border-color: #e74c3c !important;
+}
+
+.field-error {
+    margin-top: 6px;
+    color: #e74c3c;
+    font-size: 14px;
+    font-weight: bold;
+}
+
