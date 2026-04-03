@@ -8,38 +8,11 @@ if(!isset($_SESSION["login"])){
     exit();
 }
 
-$id = null ;
-
-if(!isset($_GET["id"])){
-    header("Location:/ProjetWeb/pages/panier.php");
-    exit();
-}
-
-$id = (int) $_GET["id"] ;
-
-
-if(!$id){
-    header("Location:/ProjetWeb/pages/panier.php");
-    exit();
-}
-
 
 
 
 require_once __DIR__."/../Autoload.php" ;
 Autoload::register();
-
-
-$db = new \gdb\TagDB();
-
-$tag = $db->getById($id);
-
-if(!$tag){
-    $erreur = urlencode("Tag introuvable") ;
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur");
-    exit();
-}
-
 
 
 
@@ -56,8 +29,8 @@ if(!$name){
     exit();
 }
 
-
-$db->updateTag($id , $name);
+$db = new \gdb\TagDB();
+$db->addTag($name);
 
 header("Location:/ProjetWeb/pages/panier.php");
 exit();

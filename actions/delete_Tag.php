@@ -42,22 +42,7 @@ if(!$tag){
 
 
 
-
-$name = "" ;
-
-if(!empty($_GET["name"])){
-    $name = $_GET["name"] ;
-}
-
-
-if(!$name){
-    $erreur= urlencode("Le champ Name doit etre rempli") ;
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur");
-    exit();
-}
-
-
-$db->updateTag($id , $name);
+$db->deleteTag($id);
 
 header("Location:/ProjetWeb/pages/panier.php");
 exit();

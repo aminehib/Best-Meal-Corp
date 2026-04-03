@@ -12,7 +12,9 @@ $recepies = [] ;
 
 $name =  $_GET["nom"];
 $ingredients = $_GET["ingredient"];
-$tag =  $_GET["tag"];
+$tag =  $_GET["tag"] ;
+
+
 
 
 $byName = [] ;
@@ -27,6 +29,8 @@ $tagId= [] ;
 
 
 if(empty($name) && empty($ingredients) && empty($tag)){
+    header("Location:/ProjetWeb/pages/recettes.php");
+    exit();
     
 }
 
@@ -50,7 +54,7 @@ if(!empty($name)){
 
 
 if(!empty($ingredients)){
-    $byIng = $db->getRecepiesByIngredients($ingredients[0]);
+    $byIng = $db->getRecepiesByIngredients($ingredients);
     $ingId= [] ;
     foreach($byIng as $rec){
         array_push($ingId , $rec->id);
@@ -66,18 +70,18 @@ if(!empty($ingredients)){
 
 if(!empty($tag)){
 
-    $byTag = $db->getRecepiesByTags($tag[0]) ;
+    $byTag = $db->getRecepiesByTags($tag) ;
     $tagId= [] ;
     foreach($byTag as $rec){
         array_push($tagId , $rec->id);
     }
 
-    if(count($rect)== 0){
-
+    if(count($tagId)== 0){
+        header("Location:/ProjetWeb/pages/recettes.php?n=");
+        exit();
     }
 
 }
-
 
 
 if(!empty($nameId)){
@@ -109,6 +113,7 @@ $result = array_intersect($nameId,$ingId , $tagId) ;
 
 
 
+
 foreach($result as $id){
     array_push($recepies ,$db->getById($id) ) ;
 }
@@ -116,12 +121,10 @@ foreach($result as $id){
 
 
 
-
+ob_start();
 foreach($recepies as $recepie){
-    ob_start();
     $recepie->getHTML();
 }
-
 $content = ob_get_clean();
 $_SESSION["recherche"] = $content ;
 

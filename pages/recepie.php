@@ -16,7 +16,7 @@
 
             <div class="recette-top">
                 <div class="recette-image">
-                    <img src="<?= $recette->image_url?>" alt="<?=$recette->name?>">
+                    <img src="/ProjetWeb/pages/images/uploads/<?= $recette->image_url ?>" alt="<?=$recette->name?>">
                 </div>
 
                 <div class="recette-info">

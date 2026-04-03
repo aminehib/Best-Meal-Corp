@@ -2,6 +2,17 @@
 session_start();
 require_once __DIR__."/../Autoload.php";
 Autoload::register();
+    $db = new \gdb\RecepieDB();
+    
+    $recepies = $db->getAllRecepies();
+
+    $db = new \gdb\IngredientDB();
+
+    $ingredients = $db->getAllIngredients();
+
+    $db = new \gdb\TagDB();
+
+    $tags = $db->getAllTags();
 
 
 $content = "" ;
@@ -16,9 +27,6 @@ if(isset($_SESSION["recherche"])){
 
 }else{
     
-    $db = new \gdb\RecepieDB();
-    
-    $recepies = $db->getAllRecepies();
     ob_start();
     foreach($recepies as $recepie){
         $recepie->getHTML();
@@ -26,8 +34,10 @@ if(isset($_SESSION["recherche"])){
     $content = ob_get_clean();
 
 }
+    
 
-\classe\Template::render($content);
+
+\classe\Template::render($content , $ingredients , $tags);
 
 
 

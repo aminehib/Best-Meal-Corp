@@ -8,7 +8,7 @@ class Recepie{
         ?>
         <div class = "recepie" id = "<?php echo htmlspecialchars($this->id) ?>" >
             <h2><?= htmlspecialchars($this->title) ?></h2>
-            <img src= "<?php echo "images/recepies/" .htmlspecialchars($this->image_url) ?>" alt="">
+            <img src= "<?php echo "/ProjetWeb/pages/images/uploads/" .htmlspecialchars($this->image_url) ?>" alt="">
             <p> <?php echo htmlspecialchars($this->description) ?> </p>
             <a href="/ProjetWeb/pages/recette.php?id=<?php echo htmlspecialchars($this->id)?>" class="btn btn-primary">Voir la recette</a>
         </div>

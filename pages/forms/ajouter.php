@@ -1,3 +1,13 @@
+<?php session_start(); 
+
+if(!isset($_SESSION["login"])){
+    $erreur = urlencode("Accès Interdit");
+    header("Location:/ProjetWeb/pages/recettes.php?erreur=$erreur") ;
+    exit();
+}
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -30,7 +40,7 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="description">Description</label>
+                        <label for="description" >Description</label>
                         <textarea id="description" name="description" placeholder="Décrivez la recette..."></textarea>
                     </div>
 
@@ -48,10 +58,14 @@
                         <label for="servings">Nombre de personnes</label>
                         <input type="number" id="servings" name="servings" placeholder="Ex : 4">
                     </div>
+                      <div class="form-group full-width">
+                        <label for="preparation">Preparation</label>
+                        <textarea id="preparation" name="preparation" placeholder="Décrivez la recette..."></textarea>
+                    </div>
 
                     <div class="form-group full-width">
                         <label for="image">Image</label>
-                        <input type="file" id="image" name="img" accept="image/*">
+                        <input type="file" id="image" name="img" >
                     </div>
 
                     <div class="form-group">

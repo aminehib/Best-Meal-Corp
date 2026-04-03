@@ -130,6 +130,7 @@ body {
 /* Bloc des boutons */
 .hero-buttons {
     display: flex; /* Boutons sur une ligne */
+    gap: 20px;
 }
 
 /* Style commun des boutons */
@@ -144,6 +145,7 @@ body {
 .btn-primary {
     background-color: #d35400; /* Fond orange */
     color: white; /* Texte blanc */
+    
 }
 
 
@@ -224,7 +226,6 @@ body {
     font-size: 36px; 
 }
 
-
 .discover-box p {
     margin-bottom: 20px; 
 }
@@ -234,7 +235,9 @@ body {
     background-color: white; /* Fond blanc */
     color: #111; /* Texte noir */
 }
-
+.discover-box .hero-buttons {
+    justify-content: center;
+}
 /* Footer */
 .site-footer {
     background-color: #111; 
@@ -437,15 +440,16 @@ body {
 
 /* Formulaire avancé */
 .search-form {
-    display: flex; 
-    gap: 20px; 
-    flex-wrap: wrap; /* Retour à la ligne */
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
 }
 
 /* Groupe label + input */
-.form-group {
-    flex: 1; /* Largeur flexible */
-    min-width: 220px; 
+.search-form .form-group {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
 }
 
 /* Label */
@@ -468,11 +472,18 @@ body {
     background-color: white;
     box-shadow: none;
 }
+
+.search-form .form-group .selectize-control,
+.search-form .form-group .selectize-input {
+    width: 100%;
+    max-width: 100%;
+}
 /* Zone des boutons */
 .form-actions {
     width: 100%; 
     text-align: center; 
     margin-top: 10px; /* Espace en haut */
+    grid-column: 1 / -1;
 }
 
 
@@ -588,3 +599,438 @@ body {
     padding: 10px 0;
     font-size: 15px;
 }
+.selectize-control.multi .selectize-input > div.item {
+    background: #27ae60 !important;
+    color: white !important;
+    border: 1px solid #219653 !important;
+    border-radius: 5px !important;
+    text-shadow: none !important;
+}
+
+
+/* ===== Mode admin recette ===== */
+
+.admin-block {
+    position: relative;
+}
+
+.admin-recipe-page .recette-top {
+    align-items: flex-start;
+}
+
+.edit-zone-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #f39c12;
+    color: white;
+    border-radius: 50%;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
+    z-index: 5;
+}
+
+/* 1. Comportement par défaut : le bouton est repoussé tout à droite (space-between) */
+.editable-header,
+.editable-block,
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+/* 2. EXCEPTION : On colle le bouton au texte (flex-start) UNIQUEMENT pour :
+   - Le Titre (.editable-header)
+   - Les titres "Informations" et "Tags" (qui sont dans la zone .recette-info) */
+.editable-header,
+.recette-info .section-head {
+    justify-content: flex-start;
+}
+
+.editable-header {
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.editable-block {
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.editable-block .recette-description {
+    margin-bottom: 0;
+}
+
+.editable-section {
+    margin-bottom: 20px;
+}
+
+.section-head {
+    margin-bottom: 12px;
+}
+
+.section-edit-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #111;
+}
+
+.edit-inline-btn {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #f39c12;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.edit-zone-btn:hover,
+.edit-inline-btn:hover {
+    background-color: #d68910;
+}
+
+.pantry-remove-btn {
+    border: none;
+    background-color: #d35400;
+    cursor: pointer;
+}
+
+.pantry-remove-btn:hover {
+    background-color: #b94700;
+}
+
+.editing-field {
+    outline: 2px solid #f39c12;
+    background-color: #fff8ef;
+    border-radius: 6px;
+    padding: 4px 6px;
+}
+
+.edit-inline-btn.editing {
+    background-color: #f39c12;
+}
+
+.edit-inline-btn.editing:hover {
+    background-color: #d68910;
+}
+
+.recipe-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.recipe-edit-form.is-hidden {
+    display: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.recipe-edit-form:first-of-type {
+    margin-top: 8px;
+}
+
+.recipe-form-label {
+    display: block;
+    font-weight: bold;
+    color: #111;
+    font-size: 15px;
+}
+
+.recipe-text-input,
+.recipe-textarea,
+.recipe-select,
+.recipe-edit-form input[type="file"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: white;
+}
+
+.recipe-textarea {
+    min-height: 140px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.recipe-title-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 36px;
+    font-weight: bold;
+    color: #111;
+    padding: 0;
+    margin: 10px 0 0;
+}
+
+.recipe-description-input {
+    width: 100%;
+    min-height: 110px;
+    border: 1px solid #ccc;
+    background: white;
+    color: #555;
+    font-size: 18px;
+    line-height: 1.7;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    padding: 12px 14px;
+}
+
+.recipe-select {
+    min-height: 120px;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    padding: 8px;
+}
+
+.recipe-select option {
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+.recipe-select-large {
+    min-height: 220px;
+}
+
+.recipe-form-btn {
+    align-self: flex-start;
+    border: none;
+    border-radius: 25px;
+    background-color: #d35400;
+    color: white;
+    padding: 12px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.recipe-form-btn:hover {
+    background-color: #b94700;
+}
+
+.recette-image.admin-block {
+    position: relative;
+    cursor: pointer;
+}
+
+.recette-image.admin-block .image-form {
+    position: absolute;
+    inset: auto;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.hidden-file-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.recipe-meta-form .meta-item {
+    flex: 1;
+    min-width: 180px;
+}
+
+.recipe-meta-form .meta-item {
+    padding: 12px 16px;
+}
+
+.recipe-meta-form .meta-label {
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.recipe-meta-form .recipe-text-input {
+    min-height: auto;
+    border: none;
+    padding: 0;
+    background: transparent;
+    font-weight: bold;
+    font-size: 18px;
+    color: #111;
+}
+
+.recipe-tags-form {
+    margin-top: 0;
+}
+
+.recipe-tags-form .recipe-select {
+    min-height: 80px;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.recipe-content-form {
+    margin-top: 0;
+}
+
+.recipe-content-form .recipe-select,
+.recipe-content-form .recipe-textarea {
+    box-shadow: none;
+}
+
+.recipe-content-form .recipe-select option {
+    padding: 6px 0;
+}
+
+.recipe-submit-bar {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.recipe-submit-bar .recipe-form-btn {
+    align-self: center;
+}
+
+.admin-recipe-page .section-head {
+    justify-content: flex-start;
+    margin-bottom: 14px;
+}
+
+.pantry-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.pantry-section {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.pantry-section > .section-head {
+    margin-bottom: 18px;
+}
+
+.pantry-list,
+.pantry-tag-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.pantry-row,.pantry-tag-row {border: 1px solid #eee;border-radius: 12px;padding: 18px;background-color: #fafafa;}
+
+.pantry-tag-row .section-head {
+    justify-content: space-between;
+    margin-bottom: 0;
+}
+
+.pantry-tag-add {
+    background-color: white;
+}
+
+.pantry-add-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background-color: #d35400;
+    color: white;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.pantry-add-btn:hover {
+    background-color: #b94700;
+}
+
+.pantry-row {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+}
+
+.pantry-row-image {
+    width: 180px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.pantry-row-image img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.pantry-row-content {
+    flex: 1;
+}
+
+.pantry-placeholder-box {
+    border: 1px dashed #d35400;
+    border-radius: 12px;
+    padding: 12px;
+    background-color: #fff7f0;
+}
+
+.pantry-inline-form {
+    margin-top: 0;
+}
+
+.pantry-inline-label {
+    display: block;
+    margin: 12px 0 8px;
+    font-weight: bold;
+    color: #111;
+}
+
+.pantry-row-new .editable-header,
+.pantry-tag-add .section-head {
+    margin-bottom: 12px;
+}
+
+.pantry-row h3,
+.pantry-tag-row h3 {
+    font-size: 24px;
+    margin: 0;
+}
+.pantry-row.pantry-row-new{
+    display: flex;
+    justify-content: space-between;
+}
+
+.pantry-tag-row .recette-tags {
+    margin-top: 10px;
+}
+
+
+

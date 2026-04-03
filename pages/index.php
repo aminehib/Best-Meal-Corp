@@ -24,7 +24,7 @@
 
             <div class="hero-buttons">
                 <a href="recettes.php" class="btn btn-primary">Voir les recettes</a>
-                <a href="recherche.php" class="btn btn-secondary">Rechercher une recette</a>
+                <a href="panier.php" class="btn btn-secondary">Mon Panier</a>
             </div>
         </div>
 

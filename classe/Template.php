@@ -4,7 +4,7 @@ namespace classe ;
 
 class Template{
 
-    public static function render($content){?>
+    public static function render($content, $ingredients , $tags){?>
 
         <!DOCTYPE html>
 <html lang="fr">
@@ -30,7 +30,6 @@ class Template{
                     pour tous les goûts et toutes les envies.
                 </p>
             </div>
-
             <div class="search-bar">
 
                 <form action="/ProjetWeb/actions/recherche.php" method="GET" class="search-form">
@@ -43,10 +42,10 @@ class Template{
                    <div class="form-group">
                     <label for="ingredient-select">Ingrédients</label>
                         <select id="ingredient-select" name="ingredient[]" multiple>
-                <option value="tomate">Tomate</option>
-                <option value="fromage">Fromage</option>
-                <option value="chocolat">Chocolat</option>
-                
+                <?php 
+                foreach($ingredients as $ing): ?>
+                <option value="<?=$ing->name?>"> <?=$ing->name?> </option>
+                <?php endforeach ; ?>
                 </select>
                 </div>
 
@@ -54,9 +53,11 @@ class Template{
         <div class="form-group">
             <label for="tag-select">Tags</label>
             <select id="tag-select" name="tag[]" multiple>
-                <option value="dessert">Dessert</option>
-                <option value="léger">Léger</option>
-                <option value="au four">Au four</option>
+                <?php 
+                foreach($tags as $tag): ?>
+                <option value="<?=$tag->name?>"><?=$tag->name?></option>
+                <?php endforeach ; ?>
+                    
                 
             </select>
         </div>

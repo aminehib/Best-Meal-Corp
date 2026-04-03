@@ -1,35 +1,11 @@
 <?php
 namespace gdb;
 
-// Classe pour gérer les ingrédients
-class IngredientDB
-{
-    // Connexion à la base
-    private \PDO $pdo;
+require_once __DIR__ . "/DB.php";
 
-    // Constructeur : connexion automatique
-    public function __construct()
-    {
-        $db_name = "bestmeal";
-        $db_host = "127.0.0.1";
-        $db_port = "3306";
-        $db_user = "root";
-        $db_pwd = "";
-
-        try {
-            // Connexion PDO
-            $dsn = "mysql:dbname=$db_name;host=$db_host;port=$db_port;charset=utf8";
-            $this->pdo = new \PDO($dsn, $db_user, $db_pwd);
-
-            // Affiche les erreurs SQL
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-        } catch (\Exception $e) {
-            die("Erreur connexion : " . $e->getMessage());
-        }
-    }
-
-    // Récupère tous les ingrédients
+// Classe pour gerer les ingredients
+class IngredientDB extends DB{
+    // Recupere tous les ingredients
     public function getAllIngredients(): array
     {
         $statement = $this->pdo->prepare("SELECT * FROM ingredient");
@@ -42,7 +18,7 @@ class IngredientDB
         return [];
     }
 
-    // Récupère un ingrédient par son id
+    // Recupere un ingredient par son id
     public function getById(int $id): object|null
     {
         $statement = $this->pdo->prepare("SELECT * FROM ingredient WHERE id = :id");
@@ -78,7 +54,7 @@ class IngredientDB
         return [];
     }
 
-    // Ajoute un ingrédient
+    // Ajoute un ingredient
     public function addIngredient(string $name, ?string $image_url = null): bool
     {
         $statement = $this->pdo->prepare(
@@ -95,7 +71,49 @@ class IngredientDB
         return false;
     }
 
-    // Modifie un ingrédient
+    public function getOrCreateIngredientIdByName(string $name, ?string $image_url = null): int
+    {
+        $normalizedName = trim($name);
+
+        if ($normalizedName === '') {
+            throw new \InvalidArgumentException("Le nom de l'ingredient ne peut pas etre vide.");
+        }
+
+        $statement = $this->pdo->prepare(
+            "SELECT id FROM ingredient WHERE name = :name LIMIT 1"
+        );
+
+        if ($statement === false) {
+            throw new \Exception("Erreur preparation recherche ingredient");
+        }
+
+        $statement->execute([
+            ":name" => $normalizedName
+        ]);
+
+        $ingredientId = $statement->fetchColumn();
+
+        if ($ingredientId !== false) {
+            return (int) $ingredientId;
+        }
+
+        $insertStatement = $this->pdo->prepare(
+            "INSERT INTO ingredient (name, image_url) VALUES (:name, :image_url)"
+        );
+
+        if ($insertStatement === false) {
+            throw new \Exception("Erreur preparation ajout ingredient");
+        }
+
+        $insertStatement->execute([
+            ":name" => $normalizedName,
+            ":image_url" => $image_url
+        ]);
+
+        return (int) $this->pdo->lastInsertId();
+    }
+
+    // Modifie un ingredient
     public function updateIngredient(int $id, string $name, ?string $image_url = null): bool
     {
         $statement = $this->pdo->prepare(
@@ -113,7 +131,7 @@ class IngredientDB
         return false;
     }
 
-    // Supprime un ingrédient
+    // Supprime un ingredient
     public function deleteIngredient(int $id): bool
     {
         $statement = $this->pdo->prepare(
@@ -129,8 +147,13 @@ class IngredientDB
         return false;
     }
 
+    public function rechercherIngredient(string|array $names): array
+    {
+        return $this->getIngredientByName($names);
+    }
 
-    public function getIngredients(int $id):array{
+
+     public function getIngredients(int $id):array{
 
     $statement = $this->pdo->prepare(
         "SELECT ing.* 
@@ -150,18 +173,4 @@ class IngredientDB
 
     return [];
 }
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
 }

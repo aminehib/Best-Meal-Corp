@@ -23,7 +23,7 @@ if(!$id){
 
 $db = new \gdb\RecepieDB();
 $recette = $db->getById($id);
-echo $recette->id ;
+
 
 
 if(!$recette){
@@ -33,11 +33,14 @@ if(!$recette){
 $db = new \gdb\TagDB();
 $tags = $db->getTags($id);
 
+$tagsAll = $db->getAllTags();
+
 $db = new \gdb\IngredientDB();
 $ingredients = $db->getIngredients($id);
+$ingredientsAll = $db->getAllIngredients();
 
 
 
-include __DIR__."/recepie.php";
+include __DIR__."/recepie_copie.php";
 
 
