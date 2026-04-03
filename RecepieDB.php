@@ -167,14 +167,15 @@ class RecepieDB extends DB{
         array $tags = [],
         ?string $image_url = null,
         ?int $preparation_time = null,
+        ?string $preparation = null,
         ?int $cooking_time = null,
         ?int $servings = null
     ): bool {
         $statement = $this->pdo->prepare(
             "INSERT INTO recipe
-            (title, description, image_url, preparation_time, cooking_time, servings)
+            (title, description, image_url, preparation_time, preparation, cooking_time, servings)
             VALUES
-            (:title, :description, :image_url, :preparation_time, :cooking_time, :servings)"
+            (:title, :description, :image_url, :preparation_time, :preparation, :cooking_time, :servings)"
         );
 
         if ($statement !== false) {
@@ -197,6 +198,7 @@ class RecepieDB extends DB{
                     ":description" => $description,
                     ":image_url" => $image_url,
                     ":preparation_time" => $preparation_time,
+                    ":preparation" => $preparation,
                     ":cooking_time" => $cooking_time,
                     ":servings" => $servings
                 ]);
@@ -228,6 +230,7 @@ class RecepieDB extends DB{
         array $tags = [],
         ?string $image_url = null,
         ?int $preparation_time = null,
+        ?string $preparation = null,
         ?int $cooking_time = null,
         ?int $servings = null
     ): bool {
@@ -237,6 +240,7 @@ class RecepieDB extends DB{
                  description = :description,
                  image_url = :image_url,
                  preparation_time = :preparation_time,
+                 preparation = :preparation,
                  cooking_time = :cooking_time,
                  servings = :servings
              WHERE id = :id"
@@ -263,6 +267,7 @@ class RecepieDB extends DB{
                     ":description" => $description,
                     ":image_url" => $image_url,
                     ":preparation_time" => $preparation_time,
+                    ":preparation" => $preparation,
                     ":cooking_time" => $cooking_time,
                     ":servings" => $servings
                 ]);
