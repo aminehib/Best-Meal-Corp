@@ -10,12 +10,12 @@ if(!isset($_SESSION["login"])){
 
 $id = null ;
 
-if(!isset($_GET["id"])){
+if(!isset($_POST["id"])){
     header("Location:/ProjetWeb/pages/panier.php");
     exit();
 }
 
-$id = (int) $_GET["id"] ;
+$id = (int) $_POST["id"] ;
 
 
 if(!$id){
@@ -45,8 +45,8 @@ if(!$tag){
 
 $name = "" ;
 
-if(!empty($_GET["name"])){
-    $name = $_GET["name"] ;
+if(!empty($_POST["name"])){
+    $name = $_POST["name"] ;
 }
 
 

@@ -92,7 +92,7 @@
                                 <?php endif; ?>
                             </div>
                             <?php if(isset($_SESSION["login"])): ?>
-                            <form action="/ProjetWeb/actions/update_Tag.php" method="GET" class="recipe-edit-form is-hidden" data-form-id="tag-form-<?= $tag->id ?>">
+                            <form action="/ProjetWeb/actions/update_Tag.php" method="POST" class="recipe-edit-form is-hidden" data-form-id="tag-form-<?= $tag->id ?>">
                                 <input type="hidden" name="id" value="<?= $tag->id ?>">
                                 <input type="text" name="name" value="<?= $tag->name ?>" class="recipe-text-input">
                                 <button type="submit" class="recipe-form-btn">Enregistrer</button>
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const article = document.createElement('article');
         article.className = 'new';
         article.innerHTML = `
-        <form action="/ProjetWeb/actions/add_Ingredient.php" method="POST" enctype="multipart/form-data"  ">
+        <form action="/ProjetWeb/actions/add_Ingredient.php" method="POST" enctype="multipart/form-data"  >
                 <div class ="pantry-row pantry-row-new" >
             <div class="pantry-row-image pantry-image-trigger pantry-placeholder-box">
                 
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const article = document.createElement('article');
         article.className = 'pantry-tag-row pantry-tag-add';
         article.innerHTML = `
-            <form action="/ProjetWeb/actions/add_Tag.php" method="GET">
+            <form action="/ProjetWeb/actions/add_Tag.php" method="POST">
             <div class="section-head">
                 <h3>Nouveau tag</h3>
                 <!-- Bouton X pour supprimer un tag ajoute avec + -->

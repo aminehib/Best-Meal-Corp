@@ -18,8 +18,8 @@ Autoload::register();
 
 $name = "" ;
 
-if(!empty($_GET["name"])){
-    $name = $_GET["name"] ;
+if(!empty($_POST["name"])){
+    $name = $_POST["name"] ;
 }
 
 
