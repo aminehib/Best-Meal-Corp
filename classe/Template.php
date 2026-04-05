@@ -44,7 +44,7 @@ class Template{
                         <select id="ingredient-select" name="ingredient[]" multiple>
                 <?php 
                 foreach($ingredients as $ing): ?>
-                <option value="<?=$ing->name?>"> <?=$ing->name?> </option>
+                <option value="<?= htmlspecialchars($ing->name) ?>"> <?= htmlspecialchars($ing->name) ?> </option>
                 <?php endforeach ; ?>
                 </select>
                 </div>
@@ -55,7 +55,7 @@ class Template{
             <select id="tag-select" name="tag[]" multiple>
                 <?php 
                 foreach($tags as $tag): ?>
-                <option value="<?=$tag->name?>"><?=$tag->name?></option>
+                <option value="<?= htmlspecialchars($tag->name) ?>"><?= htmlspecialchars($tag->name) ?></option>
                 <?php endforeach ; ?>
                     
                 

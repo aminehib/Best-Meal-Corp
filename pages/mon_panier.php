@@ -32,13 +32,13 @@
 
                     <?php foreach($ingredients as $ingredient): ?>
                         <article class="pantry-row">
-                            <div class="pantry-row-image pantry-image-trigger" id="<?= "pantry-image-trigger-" . $ingredient->id ?>">
-                                <img src="/ProjetWeb/pages/images/uploads/<?php echo $ingredient->image_url; ?>" alt="<?= $ingredient->name ?>">
+                            <div class="pantry-row-image pantry-image-trigger" id="<?= htmlspecialchars('pantry-image-trigger-' . $ingredient->id) ?>">
+                                <img src="/ProjetWeb/pages/images/uploads/<?= htmlspecialchars($ingredient->image_url) ?>" alt="<?= htmlspecialchars($ingredient->name) ?>">
                                 <?php if(isset($_SESSION["login"])): ?>
                                 <form action="/ProjetWeb/actions/update_Ingredient.php" method="POST" enctype="multipart/form-data" class="recipe-edit-form image-form is-hidden" data-form-id="pantry-image-form-1">
-                                    <input type="hidden" name="id" value="<?= $ingredient->id ?>">
-                                    <label for="pantry-image-<?= $ingredient->id ?>" class="sr-only">Changer l'image</label>
-                                    <input type="file" id="pantry-image-<?= $ingredient->id ?>" name="img" accept="image/*" class="hidden-file-input">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($ingredient->id) ?>">
+                                    <label for="pantry-image-<?= htmlspecialchars($ingredient->id) ?>" class="sr-only">Changer l'image</label>
+                                    <input type="file" id="pantry-image-<?= htmlspecialchars($ingredient->id) ?>" name="img" accept="image/*" class="hidden-file-input">
                     
                                 </form>
                                 <?php endif; ?>
@@ -46,18 +46,18 @@
 
                             <div class="pantry-row-content">
                                 <div class="editable-header">
-                                    <h3><?= $ingredient->name ?></h3>
+                                    <h3><?= htmlspecialchars($ingredient->name) ?></h3>
                                     <?php if(isset($_SESSION["login"]) ): ?>
                                         <div class="button-group">
-                                            <a href="#" class="edit-inline-btn" data-target="pantry-name-form-<?= $ingredient->id ?>" title="Modifier le nom">✎</a>
-                                            <a href="/ProjetWeb/actions/delete_Ingredient.php?id=<?= $ingredient->id ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer l'ingrédient" onclick="return confirm('Supprimer cet ingrédient ?');">🗑</a>
+                                            <a href="#" class="edit-inline-btn" data-target="pantry-name-form-<?= htmlspecialchars($ingredient->id) ?>" title="Modifier le nom">✎</a>
+                                            <a href="/ProjetWeb/actions/delete_Ingredient.php?id=<?= htmlspecialchars($ingredient->id) ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer l'ingrédient" onclick="return confirm('Supprimer cet ingrédient ?');">🗑</a>
                                         </div>
                                     <?php endif; ?>
                                 </div>
                                         <?php if(isset($_SESSION["login"])): ?>
-                                <form action="/ProjetWeb/actions/update_Ingredient.php" method="POST" class="recipe-edit-form is-hidden" data-form-id="pantry-name-form-<?= $ingredient->id ?>">
-                                    <input type="hidden" name="id" value="<?= $ingredient->id ?>">
-                                    <input type="text" name="name" value="<?= $ingredient->name ?>" class="recipe-text-input">
+                                <form action="/ProjetWeb/actions/update_Ingredient.php" method="POST" class="recipe-edit-form is-hidden" data-form-id="pantry-name-form-<?= htmlspecialchars($ingredient->id) ?>">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($ingredient->id) ?>">
+                                    <input type="text" name="name" value="<?= htmlspecialchars($ingredient->name) ?>" class="recipe-text-input">
                                     <button type="submit" class="recipe-form-btn">Enregistrer</button>
                                 </form>
                                 <?php endif; ?>
@@ -85,16 +85,16 @@
                         <?php foreach($tags as $tag): ?>
                         <article class="pantry-tag-row">
                             <div class="section-head">
-                                <h3><?= $tag->name ?></h3>
+                                <h3><?= htmlspecialchars($tag->name) ?></h3>
                                 <?php if(isset($_SESSION["login"])): ?>
-                                    <a href="#" class="edit-inline-btn" data-target="tag-form-<?= $tag->id ?>" title="Modifier le tag">✎</a>
-                                    <a href="/ProjetWeb/actions/delete_Tag.php?id=<?= $tag->id ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer le tag" onclick="return confirm('Supprimer ce tag ?');">🗑</a>
+                                    <a href="#" class="edit-inline-btn" data-target="tag-form-<?= htmlspecialchars($tag->id) ?>" title="Modifier le tag">✎</a>
+                                    <a href="/ProjetWeb/actions/delete_Tag.php?id=<?= htmlspecialchars($tag->id) ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer le tag" onclick="return confirm('Supprimer ce tag ?');">🗑</a>
                                 <?php endif; ?>
                             </div>
                             <?php if(isset($_SESSION["login"])): ?>
-                            <form action="/ProjetWeb/actions/update_Tag.php" method="POST" class="recipe-edit-form is-hidden" data-form-id="tag-form-<?= $tag->id ?>">
-                                <input type="hidden" name="id" value="<?= $tag->id ?>">
-                                <input type="text" name="name" value="<?= $tag->name ?>" class="recipe-text-input">
+                            <form action="/ProjetWeb/actions/update_Tag.php" method="POST" class="recipe-edit-form is-hidden" data-form-id="tag-form-<?= htmlspecialchars($tag->id) ?>">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($tag->id) ?>">
+                                <input type="text" name="name" value="<?= htmlspecialchars($tag->name) ?>" class="recipe-text-input">
                                 <button type="submit" class="recipe-form-btn">Enregistrer</button>
                             </form>
                             <?php endif; ?>

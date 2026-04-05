@@ -43,7 +43,7 @@ if(!$ingredient){
 
 <form method="POST" action="/ProjetWeb/actions/update_ingredient.php" enctype="multipart/form-data">
     
-    <input type="hidden" name="id" value="<?= $ingredient->id ?>">
+    <input type="hidden" name="id" value="<?= htmlspecialchars($ingredient->id) ?>">
 
     <div>
         <label>Nom</label>
@@ -53,7 +53,7 @@ if(!$ingredient){
     <div>
         <label>Image actuelle</label><br>
         <?php if($ingredient->getImage()): ?>
-            <img src="/ProjetWeb/pages/images/ingredients/<?= $ingredient->image_url ?>" width="100">
+            <img src="/ProjetWeb/pages/images/ingredients/<?= htmlspecialchars($ingredient->image_url) ?>" width="100">
         <?php else: ?>
             <p>Aucune image</p>
         <?php endif; ?>

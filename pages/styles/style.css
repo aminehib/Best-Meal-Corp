@@ -554,6 +554,13 @@ body {
 .selectize-dropdown {
     border-radius: 8px;
     font-size: 15px;
+    background-color: white !important;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.selectize-dropdown .selectize-dropdown-content {
+    background-color: white !important;
 }
 
 /* PAGE FORMULAIRE ADMIN */
@@ -640,27 +647,25 @@ body {
     z-index: 5;
 }
 
-/* 1. Comportement par défaut : le bouton est repoussé tout à droite (space-between) */
+/* Tous les blocs éditables : bouton toujours à droite */
 .editable-header,
 .editable-block,
 .section-head {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
+    width: 100%;
 }
 
-/* 2. EXCEPTION : On colle le bouton au texte (flex-start) UNIQUEMENT pour :
-   - Le Titre (.editable-header)
-   - Les titres "Informations" et "Tags" (qui sont dans la zone .recette-info) */
-.editable-header,
-.recette-info .section-head {
-    justify-content: flex-start;
+.editable-header .edit-inline-btn,
+.editable-block .edit-inline-btn,
+.section-head .edit-inline-btn {
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
 .editable-header {
     margin-bottom: 10px;
-    justify-content: space-between;
 }
 
 /* Boutons groupés ensemble à droite pour les en-têtes de ligne */
@@ -764,10 +769,22 @@ body {
     flex-direction: column;
     gap: 12px;
     margin-top: 16px;
+    animation: slideDown 0.18s ease;
 }
 
 .recipe-edit-form.is-hidden {
     display: none;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.empty-placeholder {
+    color: #bbb;
+    font-style: italic;
+    font-size: 0.95em;
 }
 
 .sr-only {
@@ -803,6 +820,15 @@ body {
     border-radius: 8px;
     font-size: 15px;
     background-color: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.recipe-text-input:focus,
+.recipe-textarea:focus,
+.recipe-description-input:focus {
+    border-color: #f39c12;
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
 }
 
 .recipe-textarea {
@@ -815,12 +841,27 @@ body {
 .recipe-title-input {
     width: 100%;
     border: none;
-    background: transparent;
+    border-bottom: 2px solid #f39c12;
+    background: rgba(243, 156, 18, 0.05);
     font-size: 36px;
     font-weight: bold;
     color: #111;
-    padding: 0;
+    padding: 4px 8px;
     margin: 10px 0 0;
+    border-radius: 4px 4px 0 0;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.recipe-title-input:focus {
+    border-bottom-color: #d68910;
+    background: rgba(243, 156, 18, 0.1);
+}
+
+.recipe-title-input::placeholder {
+    color: #bbb;
+    font-weight: normal;
+    font-style: italic;
 }
 
 .recipe-description-input {
@@ -923,7 +964,7 @@ body {
 .recipe-tags-form .recipe-select {
     min-height: 80px;
     border: none;
-    background: transparent;
+    background: white;
     padding: 0;
 }
 
@@ -950,7 +991,7 @@ body {
 }
 
 .admin-recipe-page .section-head {
-    justify-content: flex-start;
+    justify-content: space-between;
     margin-bottom: 14px;
 }
 
@@ -969,6 +1010,7 @@ body {
 
 .pantry-section > .section-head {
     margin-bottom: 18px;
+    justify-content: space-between;
 }
 
 .pantry-list,

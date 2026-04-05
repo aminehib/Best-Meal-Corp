@@ -6,7 +6,7 @@ Autoload::register();
 if(isset($_POST["username"]) && isset($_POST["password"])  ){
     $log = new classe\Admin();
     $username = htmlspecialchars($_POST["username"]);
-    $password = htmlspecialchars( $_POST["password"]);
+    $password = $_POST["password"];
     $error = $log->connect( $username , $password) ;
     if(empty($error)){
         $_SESSION["login"] = true ;

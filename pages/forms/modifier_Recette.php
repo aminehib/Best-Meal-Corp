@@ -40,7 +40,7 @@ if(!$recepie){
 
 
 if(isset($_GET["erreur"])){?>
-    <script > var erreur = "<?=$_GET["erreur"]?>" 
+    <script > var erreur = "<?= htmlspecialchars($_GET["erreur"]) ?>" 
     </script>
     <script src ="js/update_recepie.js"> </script>
 <?php 
@@ -63,9 +63,9 @@ $tag = $db->getTags($id);// Renvoie la liste des ingredients d'une recette
 
 <form method="GET" action="/ProjetWeb/actions/update_recette.php" enctype="multipart/form-data" >
 
-    <input type="hidden" name="id" value="<?= $id ?>">
+    <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">
 
-    <input type="text" name="new-name" value ="<?= $recepie->name;?>" >
+    <input type="text" name="new-name" value="<?= htmlspecialchars($recepie->name) ?>">
 
 
 
@@ -79,7 +79,7 @@ $tag = $db->getTags($id);// Renvoie la liste des ingredients d'une recette
                 endif;    
             endforeach;      
             ?>
-            <option <?= $selected ?> value="<?= $ingredient->id ?>"> <?= $ingredient->name ?> </option>
+            <option <?= $selected ?> value="<?= htmlspecialchars($ingredient->id) ?>"> <?= htmlspecialchars($ingredient->name) ?> </option>
         <?php 
         endforeach; ?>
         </select>
@@ -95,7 +95,7 @@ $tag = $db->getTags($id);// Renvoie la liste des ingredients d'une recette
                 endif;
             endforeach;
             ?>
-            <option <?= $selected ?> value="<?= $t->id ?>"> <?= $t->name?> </option>
+            <option <?= $selected ?> value="<?= htmlspecialchars($t->id) ?>"> <?= htmlspecialchars($t->name) ?> </option>
         <?php endforeach; ?>
     </select>
 

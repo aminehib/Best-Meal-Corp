@@ -41,6 +41,6 @@ $ingredientsAll = $db->getAllIngredients();
 
 
 
-include __DIR__."/recepie_copie.php";
+include __DIR__."/recepie.php";
 
 
