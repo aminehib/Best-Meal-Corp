@@ -6,14 +6,7 @@ if(!isset($_SESSION["login"])){
     exit();
 }
 
-if(isset($_GET["erreur"])){
-    ?> <script>var erreur = <?= urldecode($_GET["erreur"] ); ?>;</script> ;
-    <script src = '/ProjetWeb/pages/js/ajouter.js'></script>;
-    <?php
-}
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -110,6 +103,16 @@ if(isset($_GET["erreur"])){
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"></script>
+<?php
+if(isset($_SESSION["erreur"])){
+    ?> <script>var erreur = "<?= $_SESSION["erreur"]?>";</script> ;
+    <script src = '/ProjetWeb/pages/js/validation.js'></script>;
+    <?php   
+    unset($_SESSION["erreur"]);
+}
+
+?>
+
 
 <script>
 $(document).ready(function() {

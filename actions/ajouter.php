@@ -3,9 +3,9 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/recettes.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+     header("Location:/ProjetWeb/pages/recettes.php") ;
+     exit() ;
 }
 
 require_once  __DIR__."/../Autoload.php" ;
@@ -63,8 +63,8 @@ if(isset($_FILES["img"]) && $_FILES["img"]["error"] == 0){
     $filename = $_FILES["img"]["name"];
     $dir = __DIR__ ."/../pages/images/uploads/". $filename;
     if(move_uploaded_file($_FILES["img"]["tmp_name"], $dir) == false){
-        $erreur = urlencode("file error") ;
-        header("Location:/ProjetWeb/pages/forms/ajouter.php?erreur=$erreur");
+        $_SESSION["erreur"] = "Erreur lors de l'upload de l'image" ;
+        header("Location:/ProjetWeb/pages/forms/ajouter.php") ;
         exit();
     };
 }
@@ -76,9 +76,9 @@ if(isset($_POST["cooking_time"])){
 
 // Si aucun champ n'est rempli, on affiche une erreur
 if(!$name && !$ingredients && !$tags && !$filename && !$cookingTime && !$preparationTime && !$servings && !$description &&!$preparation ){
-    $erreur = urlencode("Aucun champ n'a été rempli") ;
-    header("Location:/ProjetWeb/pages/forms/ajouter.php?erreur=$erreur");
-    exit();
+    $_SESSION["erreur"] = "Aucun champ n'a été rempli" ;
+     header("Location:/ProjetWeb/pages/forms/ajouter.php") ;
+     exit() ;
 }
 
 

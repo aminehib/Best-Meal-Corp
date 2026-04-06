@@ -49,7 +49,7 @@
 
                             <div class="pantry-row-content">
                                 <div class="editable-header">
-                                    <h3><?= htmlspecialchars($ingredient->name) ?></h3>
+                                    <h3><?= $ingredient->name ? htmlspecialchars($ingredient->name) :  "<span class=\"empty-placeholder\">Sans Nom</span>"  ?></h3>
                                     <?php if(isset($_SESSION["login"]) ): ?>
                                         <div class="button-group">
                                             <a href="#" class="edit-inline-btn" data-target="pantry-name-form-<?= htmlspecialchars($ingredient->id) ?>" title="Modifier le nom">✎</a>

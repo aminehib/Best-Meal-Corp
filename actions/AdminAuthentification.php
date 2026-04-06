@@ -14,11 +14,13 @@ if(isset($_POST["username"]) && isset($_POST["password"])  ){
         header("Location:$src") ;// Redirection vers la page d'où l'utilisateur vient ou vers la page d'accueil si la source n'est pas définie
         exit();
     }else{
-        header("Location:/ProjetWeb/pages/login.php?error=$error") ; // Redirection vers le formulaire de connexion avec le message d'erreur en paramètre
+        $_SESSION["erreur"] = $error ; // On stocke le message d'erreur dans une variable de session pour l'afficher dans le formulaire de connexion
+        header("Location:/ProjetWeb/pages/login.php") ; // Redirection vers le formulaire de connexion .
         exit();
     }
 }else{
-    header("Location:/ProjetWeb/pages/login.php?error=Veuillez remplir tous les champs") ; // Redirection vers le formulaire de connexion avec un message d'erreur si les champs ne sont pas remplis (Parce quue l'utilsateur peut arriver sur la pagesans passer par le formulaire de connexion)
+     $_SESSION["erreur"] = "Veuillez remplir tous les champs";
+    header("Location:/ProjetWeb/pages/login.php") ; // Redirection vers le formulaire de connexion avec un message d'erreur si les champs ne sont pas remplis (Parce quue l'utilsateur peut arriver sur la pagesans passer par le formulaire de connexion)
     exit();
 }
 

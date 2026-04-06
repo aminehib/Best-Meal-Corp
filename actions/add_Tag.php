@@ -3,9 +3,9 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
 }
 
 
@@ -25,9 +25,9 @@ if(!empty($_POST["name"])){
 
 // Si le champ name est vide, on redirige vers la page de panier avec une erreur
 if(!$name){
-    $erreur= urlencode("Le champ Name doit etre rempli") ;
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur");
-    exit();
+    $_SESSION["erreur"] = "Le champ Name doit etre rempli";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
 }
 
 $db = new \gdb\TagDB();

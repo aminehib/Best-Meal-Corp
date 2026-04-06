@@ -3,8 +3,8 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/recettes.php?erreur=$erreur") ;
+     $_SESSION["erreur"] = "Accès Interdit";
+    header("Location:/ProjetWeb/pages/recettes.php") ;
     exit();
 }
 
@@ -28,8 +28,8 @@ if(isset($_FILES["img"]) && $_FILES["img"]["error"] == 0){
 
 // Si le champ name est vide, on redirige vers la page de panier avec une erreur
 if(!$filename && !$name){
-    $erreur = "Aucun champ n'a été rempli";
-    header("Location:/ProjetWeb/pages/panier..php?erreur=$erreur");
+    $_SESSION["erreur"] = "Aucun champ n'a été rempli";
+    header("Location:/ProjetWeb/pages/panier.php");
     exit();
 }
 

@@ -11,12 +11,12 @@ require_once __DIR__."/includes/login.php";
 ?>
 
     <?php
-    if(isset($_GET["error"])){// Si une erreur est passée en paramètre, on la stocke dans une variable JavaScript pour l'afficher dans le formulaire de connexion
+    if(isset($_SESSION["erreur"])){// Si une erreur est passée en paramètre, on la stocke dans une variable JavaScript pour l'afficher dans le formulaire de connexion
         ?>
-        <script>var erreur = "<?= urldecode($_GET["error"])?>" </script> // Variable JavaScript contenant le message d'erreur à afficher dans le formulaire de connexion
-        <script src ="js/form.js"></script>
+        <script>var erreur = "<?= $_SESSION["erreur"]?>" </script> // Variable JavaScript contenant le message d'erreur à afficher dans le formulaire de connexion
+        <script src ="js/validation.js"></script>
         <?php
-        unset($_GET["error"]);// On supprime l'erreur de l'URL pour éviter de l'afficher à nouveau si l'utilisateur rafraîchit la page
+        unset($_SESSION["erreur"]);// On supprime l'erreur de la session pour éviter de l'afficher à nouveau si l'utilisateur rafraîchit la page
     }
 
 

@@ -3,9 +3,9 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+     header("Location:/ProjetWeb/pages/recettes.php") ;
+     exit() ;
 }
 
 $id = null ;
@@ -36,9 +36,10 @@ $tag = $db->getById($id);
 
 // Si le tag n'existe pas, on redirige vers la page de panier avec une erreur
 if(!$tag){
-    $erreur = urlencode("Tag introuvable") ;
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur");
-    exit();
+    $_SESSION["erreur"] = "Tag introuvable";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
+    
 }
 
 
@@ -52,9 +53,9 @@ if(!empty($_POST["name"])){
 
 // Si le champ name est vide, on redirige vers la page de panier avec une erreur
 if(!$name){
-    $erreur= urlencode("Le champ Name doit etre rempli") ;
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur");
-    exit();
+    $_SESSION["erreur"] = "Le champ name est obligatoire";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
 }
 
 // On modifie le tag dans la base de données

@@ -3,9 +3,10 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/recettes.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+     header("Location:/ProjetWeb/pages/recettes.php") ;
+     exit() ;
+   
 }
 
 require_once  __DIR__."/../Autoload.php" ;
@@ -32,17 +33,18 @@ $db = new \gdb\IngredientDB();
 $ingredient = $db->getById($id);    
 // Si l'ingrédient n'existe pas, on redirige vers la page de panier avec une erreur
 if(!$ingredient){
-    $erreur = urldecode("Ingredient introuvable");
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Ingrédient introuvable";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
 }
 
 // On supprime l'ingrédient de la base de données
 // Si la suppression de l'ingrédient échoue, on redirige vers la page de panier avec une erreur
 if(!$db->deleteIngredient($id)){
-    $erreur = urlencode("Erreur lors de la suppression de l'ingrédient");
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Erreur lors de la suppression de l'ingrédient";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
 }
+
 header("Location:/ProjetWeb/pages/panier.php") ;
 exit();

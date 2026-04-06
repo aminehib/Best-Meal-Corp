@@ -3,9 +3,9 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/recettes.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+     header("Location:/ProjetWeb/pages/recettes.php") ;
+     exit() ;
 }
 
 require_once  __DIR__."/../Autoload.php" ;
@@ -33,8 +33,8 @@ $recette = $db->getById($id);
 
 // Si la recette n'existe pas, on redirige vers la page de la recette avec une erreur
 if(!$recette){
-    $erreur = urldecode("Recette introuvable");
-    header("Location:/ProjetWeb/pages/recettes.php?erreur=$erreur") ;
+    $_SESSION["erreur"] = "Recette introuvable";
+    header("Location:/ProjetWeb/pages/recettes.php") ;
     exit();
 }
 

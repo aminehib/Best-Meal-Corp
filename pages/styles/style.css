@@ -1120,5 +1120,35 @@ body {
     margin-top: 10px;
 }
 
+.alert-error {
+    background-color: #ffe5e5;
+    color: #b00020;
+    border: 1px solid #ffb3b3;
+    padding: 10px 15px;
+    margin: 20px auto;       /* centrage horizontal */
+    border-radius: 5px;
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centre le contenu */
+    max-width: 600px;        /* limite la largeur */
+    text-align: center;       /* centre le texte si multi-lignes */
+}
 
+.alert-icon {
+    margin-right: 10px;
+}
 
+.alert-message {
+    flex: none; /* laisse le texte centré */
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    color: #b00020;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+}

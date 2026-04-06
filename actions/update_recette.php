@@ -2,9 +2,9 @@
 session_start();
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/recettes.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+    header("Location:/ProjetWeb/pages/recettes.php") ;
+    exit() ;
 }
 
 $id = null ;
@@ -32,9 +32,9 @@ $recette = $db->getById($id);
 
 // Si la recette n'existe pas, on redirige vers la page de la recette avec une erreur
 if(!$recette){
-    $erreur = urlencode("Recette introuvable") ;
-    header("Location:/ProjetWeb/pages/recette.php?id=$id&erreur=$erreur");
-    exit();
+    $_SESSION["erreur"] = "Recette introuvable";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
 }
 
 
@@ -99,10 +99,10 @@ if(isset($_POST["cooking_time"])){
     $cookingTime = (int)$_POST["cooking_time"] ;
 }
 
-// SI AUCUN CHAMP N'EST REMPLI, ON NE FAIT RIEN
+// SI AUCUN CHAMP N'EST REMPLI, ON NE FAIT RIEN ET ON REDIRIGE VERS LA PAGE DE LA RECETTE AVEC UNE ERREUR
 if(!$name && !$ingredients && !$tags && !$filename && !$cookingTime && !$preparationTime && !$servings && !$description &&!$preparation ){
-    $erreur = urlencode("Aucun champ n'a été rempli") ;
-    header("Location:/ProjetWeb/pages/recette.php?id=$id&erreur=$erreur");
+    $_SESSION["erreur"] = "Aucun champ n'a été rempli" ;
+    header("Location:/ProjetWeb/pages/recette.php?id=$id") ;
     exit();
 }
 

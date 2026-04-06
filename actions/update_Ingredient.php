@@ -3,9 +3,9 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+     header("Location:/ProjetWeb/pages/recettes.php") ;
+     exit() ;
 }
 
 
@@ -31,9 +31,9 @@ $db = new \gdb\IngredientDB();
 $ingredient = $db->getById($id);
 
 if(!$ingredient){
-    $erreur = urlencode("Ingredient introuvable");
-    header("Location:/ProjetWeb/pages/forms/panier.php?erreur=$erreur");
-    exit();
+    $_SESSION["erreur"] = "Ingrédient introuvable";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
 }
 
 
@@ -58,8 +58,8 @@ if(isset($_FILES["img"]) && $_FILES["img"]["error"] == 0){
 
 
 if(!$filename && !$name){
-    $erreur = "Aucun champ n'a été rempli";
-    header("Location:/ProjetWeb/pages/forms/panier..php?erreur=$erreur");
+    $_SESSION["erreur"] = "Aucun champ n'a été rempli";
+    header("Location:/ProjetWeb/pages/forms/panier..php");
     exit();
 }
 

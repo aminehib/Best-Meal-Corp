@@ -3,14 +3,15 @@ session_start();
 
 
 if(!isset($_SESSION["login"])){
-    $erreur = urlencode("Accès Interdit");
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
-    exit();
+    $_SESSION["erreur"] = "Accès Interdit";
+     header("Location:/ProjetWeb/pages/recettes.php") ;
+     exit() ;
 }
 
 $id = null ;
 
 if(!isset($_GET["id"])){
+    $_SESSION["erreur"] = "ID du tag non spécifié";
     header("Location:/ProjetWeb/pages/panier.php");
     exit();
 }
@@ -35,15 +36,15 @@ $db = new \gdb\TagDB();
 $tag = $db->getById($id);
 
 if(!$tag){
-    $erreur = urlencode("Tag introuvable") ;
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur");
+    $_SESSION["erreur"] = "Tag introuvable";
+    header("Location:/ProjetWeb/pages/panier.php") ;
     exit();
 }
 
 
 if(!$db->deleteTag($id)){
-    $erreur = urlencode("Erreur lors de la suppression du tag");
-    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
+    $_SESSION["erreur"] = "Erreur lors de la suppression du tag";
+    header("Location:/ProjetWeb/pages/panier.php") ;
     exit();
 }
 
