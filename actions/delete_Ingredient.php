@@ -13,15 +13,14 @@ Autoload::register() ;
 
 
 $id = null ;
-
+// On vérifie que l'id de l'ingrédient à supprimer est bien défini
 if(!isset($_GET["id"])){
     header("Location:/ProjetWeb/pages/panier.php") ;
     exit();
 }
 
-
 $id = (int) $_GET["id"] ;
-
+// Si l'id n'est pas un entier ou n'est pas valide, on redirige vers la page de panier
 if(!$id){
     header("Location:/ProjetWeb/pages/panier.php") ;
     exit();
@@ -31,13 +30,19 @@ if(!$id){
 
 $db = new \gdb\IngredientDB();
 $ingredient = $db->getById($id);    
+// Si l'ingrédient n'existe pas, on redirige vers la page de panier avec une erreur
 if(!$ingredient){
     $erreur = urldecode("Ingredient introuvable");
     header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
     exit();
 }
 
-
-$db->deleteIngredient($id);
+// On supprime l'ingrédient de la base de données
+// Si la suppression de l'ingrédient échoue, on redirige vers la page de panier avec une erreur
+if(!$db->deleteIngredient($id)){
+    $erreur = urlencode("Erreur lors de la suppression de l'ingrédient");
+    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
+    exit();
+}
 header("Location:/ProjetWeb/pages/panier.php") ;
 exit();

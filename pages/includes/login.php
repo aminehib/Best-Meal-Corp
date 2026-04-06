@@ -12,7 +12,7 @@
     <div class="login-box">
         <form method="POST" action="/ProjetWeb/actions/AdminAuthentification.php" class="login-form">
             <h1>Admin Authentification</h1>
-            <input type="hidden" name ="source" value="<?=$_GET["src"]?>">
+            <input type="hidden" name ="source" value="<?=$_GET["src"] ?? "/ProjetWeb/pages/index.php" ?>"> <!-- Champ caché pour stocker la source de redirection après la connexion -->   
             <div class="form-group">
                 <label for="Username">Username</label>
                 <input type="text" id="Username" name="username">

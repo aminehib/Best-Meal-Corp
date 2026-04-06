@@ -41,8 +41,11 @@ if(!$tag){
 }
 
 
-
-$db->deleteTag($id);
+if(!$db->deleteTag($id)){
+    $erreur = urlencode("Erreur lors de la suppression du tag");
+    header("Location:/ProjetWeb/pages/panier.php?erreur=$erreur") ;
+    exit();
+}
 
 header("Location:/ProjetWeb/pages/panier.php");
 exit();

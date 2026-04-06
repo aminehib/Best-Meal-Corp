@@ -17,6 +17,9 @@
                 <span class="page-subtitle">Gestion des ingredients</span>
                 <h1>Mon panier</h1>
                 <p>Modifiez separement vos ingredients et vos tags dans deux espaces distincts.</p>
+                <?php if(isset($_GET['erreur'])): ?>
+                    <p style="color: red;"><?php echo htmlspecialchars(urldecode($_GET['erreur'])); ?></p>
+                <?php endif; ?>
             </div>
 
             <div class="pantry-sections">
@@ -86,10 +89,12 @@
                         <article class="pantry-tag-row">
                             <div class="section-head">
                                 <h3><?= htmlspecialchars($tag->name) ?></h3>
+                                <div class="button-group">
                                 <?php if(isset($_SESSION["login"])): ?>
                                     <a href="#" class="edit-inline-btn" data-target="tag-form-<?= htmlspecialchars($tag->id) ?>" title="Modifier le tag">✎</a>
                                     <a href="/ProjetWeb/actions/delete_Tag.php?id=<?= htmlspecialchars($tag->id) ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer le tag" onclick="return confirm('Supprimer ce tag ?');">🗑</a>
                                 <?php endif; ?>
+                                </div>
                             </div>
                             <?php if(isset($_SESSION["login"])): ?>
                             <form action="/ProjetWeb/actions/update_Tag.php" method="POST" class="recipe-edit-form is-hidden" data-form-id="tag-form-<?= htmlspecialchars($tag->id) ?>">
@@ -119,8 +124,9 @@ document.addEventListener('DOMContentLoaded', function() {
         article.className = 'new';
         article.innerHTML = `
         <form action="/ProjetWeb/actions/add_Ingredient.php" method="POST" enctype="multipart/form-data"  >
-                <div class ="pantry-row pantry-row-new" >
-            <div class="pantry-row-image pantry-image-trigger pantry-placeholder-box">
+                <div class ="pantry-row-new pantry-row " >
+                                    
+            <div class="pantry-image-trigger pantry-placeholder-box">
                 
                 <img src="/projet-recette/images/logo.png" alt="Nouvel ingredient">
                 <label class="pantry-inline-label" for="new-ingredient-image-${index}">Image de l'ingredient</label>
@@ -138,9 +144,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
             </div>
+             <button type="submit" class="recipe-form-btn">Enregistrer</button>
             </div>
-            <button type="submit" class="recipe-form-btn">Enregistrer</button>
-             </form>
+            </form>
         `;
         return article;
     }
@@ -173,9 +179,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const removeButton = e.target.closest('.pantry-remove-btn');
         if (removeButton) {
             // Supprime uniquement les nouveaux blocs ajoutes avec le bouton +
-            const row = removeButton.closest('.pantry-row-new, .pantry-tag-add');
+            const row = removeButton.closest('article');
             if (row) {
                 row.remove();
+                // Re-enable the add button
+                const isIngredient = row.querySelector('.pantry-row-new') !== null;
+                const addBtn = document.querySelector(`.pantry-add-btn[data-add-type="${isIngredient ? 'ingredient' : 'tag'}"]`);
+                if (addBtn) addBtn.disabled = false;
             }
             return;
         }
@@ -200,10 +210,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (addButton) {
             const isIngredient = addButton.dataset.addType === 'ingredient';
             const list = document.getElementById(isIngredient ? 'pantry-ingredient-list' : 'pantry-tag-list');
+            // Check if there's already a new row
+            const existingNew = list.querySelector('.pantry-row-new, .pantry-tag-add');
+            if (existingNew) {
+                return;
+            }
             const newRow = isIngredient ? createIngredientRow(ingredientIndex++) : createTagRow(tagIndex++);
-
             list.prepend(newRow);
             newRow.querySelector('input[type="text"]').focus();
+            // Disable the add button
+            addButton.disabled = true;
             return;
         }
 

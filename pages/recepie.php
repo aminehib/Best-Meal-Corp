@@ -107,7 +107,7 @@
 
          <div class="meta-item">
           <label for="servings" class="meta-label">Nombre de personnes</label>
-          <input type="number" id="servings" name="servings" value="<?= htmlspecialchars($recette->servings ?? '') ?>" placeholder="ex: 4" min="1" class="recipe-text-input">
+          <input type="number" id="servings" name="servings" value="<?= htmlspecialchars($recette->servings ?? '1') ?>" placeholder="ex: 4" min="1" class="recipe-text-input">
          </div>
         </div>
        </div>

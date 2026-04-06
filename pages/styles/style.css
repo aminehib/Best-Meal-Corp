@@ -1031,6 +1031,11 @@ body {
     background-color: white;
 }
 
+.pantry-tag-add .recipe-form-btn {
+    margin: 24px auto 0;
+    display: block;
+}
+
 .pantry-add-btn {
     padding: 10px 20px;
     border: none;
@@ -1099,7 +1104,16 @@ body {
 }
 .pantry-row.pantry-row-new{
     display: flex;
+    align-items: center;
+}
+
+.pantry-row.pantry-row-new .pantry-row-new{
     justify-content: space-between;
+}
+
+.pantry-row.pantry-row-new .recipe-form-btn {
+    align-self: center;
+    margin-top: 24px;
 }
 
 .pantry-tag-row .recette-tags {

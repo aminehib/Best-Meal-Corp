@@ -6,6 +6,12 @@ if(!isset($_SESSION["login"])){
     exit();
 }
 
+if(isset($_GET["erreur"])){
+    ?> <script>var erreur = <?= urldecode($_GET["erreur"] ); ?>;</script> ;
+    <script src = '/ProjetWeb/pages/js/ajouter.js'></script>;
+    <?php
+}
+
 ?>
 
 
@@ -46,17 +52,17 @@ if(!isset($_SESSION["login"])){
 
                     <div class="form-group">
                         <label for="preparation_time">Temps de préparation</label>
-                        <input type="number" id="preparation_time" name="preparation_time" placeholder="Ex : 20">
+                        <input type="number" id="preparation_time" name="preparation_time" placeholder="Ex : 20" min="0">
                     </div>
 
                     <div class="form-group">
                         <label for="cooking_time">Temps de cuisson</label>
-                        <input type="number" id="cooking_time" name="cooking_time" placeholder="Ex : 25">
+                        <input type="number" id="cooking_time" name="cooking_time" placeholder="Ex : 25" min="0">
                     </div>
 
                     <div class="form-group">
                         <label for="servings">Nombre de personnes</label>
-                        <input type="number" id="servings" name="servings" placeholder="Ex : 4">
+                        <input type="number" id="servings" name="servings" placeholder="Ex : 4" min="0">
                     </div>
                       <div class="form-group full-width">
                         <label for="preparation">Preparation</label>

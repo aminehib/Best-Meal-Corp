@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__."/../Autoload.php";
 Autoload::register();
+    // On récupère toutes les recettes, ingrédients et tags pour les afficher sur la page des recettes
     $db = new \gdb\RecepieDB();
     
     $recepies = $db->getAllRecepies();
@@ -17,15 +18,15 @@ Autoload::register();
 
 $content = "" ;
 
-if(isset($_SESSION["recherche"])){
+if(isset($_SESSION["recherche"])){// Si une recherche a été effectuée, on affiche les résultats de la recherche à la place de toutes les recettes
 
     $content = $_SESSION["recherche"] ;
-    if(empty($content)){
-        $content =  "<script src =\"js/recherche.js\" ></script>" ;
+    if(empty($content)){// Si la recherche n'a donné aucun résultat, on affiche un message d'erreur
+        $content ="<script src =\"js/recherche.js\" ></script>" ;
     }
-    unset($_SESSION["recherche"]);
+    unset($_SESSION["recherche"]);// On supprime la variable de session de recherche pour éviter d'afficher les résultats de la recherche précédente si l'utilisateur rafraîchit la page
 
-}else{
+}else{// Sinon, on affiche toutes les recettes
     
     ob_start();
     foreach($recepies as $recepie){
@@ -36,7 +37,7 @@ if(isset($_SESSION["recherche"])){
 }
     
 
-
+// On utilise la classe Template pour afficher la page des recettes en passant le contenu des recettes, les ingrédients et les tags en paramètres
 \classe\Template::render($content , $ingredients , $tags);
 
 

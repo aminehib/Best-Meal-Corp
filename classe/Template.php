@@ -72,7 +72,7 @@ class Template{
             </div>
 
             <div class="recettes-list">
-                <?= $content ?>
+                <?= $content ?> <!-- Affichage du contenu des recettes, qui peut être soit les résultats de la recherche, soit toutes les recettes si aucune recherche n'a été effectuée -->
             </div>
         </div>
     </section>

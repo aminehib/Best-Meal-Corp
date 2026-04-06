@@ -9,7 +9,7 @@ if(!isset($_SESSION["login"])){
 
 $id = null ;
 
-if(!isset($_POST["id"])){
+if(!isset($_POST["id"])){// Si l'id n'est pas défini, on redirige vers la page de la recette
     header("Location:/ProjetWeb/pages/recette.php");
     exit();
 }
@@ -17,11 +17,10 @@ if(!isset($_POST["id"])){
 $id = (int) $_POST["id"] ;
 
 
-if(!$id){
+if(!$id){ // Si l'id n'est pas un entier, on redirige vers la page de la recette
     header("Location:/ProjetWeb/pages/recette.php");
     exit();
 }
-
 
 
 require_once __DIR__."/../Autoload.php" ;
@@ -30,6 +29,13 @@ Autoload::register();
 
 $db = new \gdb\RecepieDB();
 $recette = $db->getById($id);
+
+// Si la recette n'existe pas, on redirige vers la page de la recette avec une erreur
+if(!$recette){
+    $erreur = urlencode("Recette introuvable") ;
+    header("Location:/ProjetWeb/pages/recette.php?id=$id&erreur=$erreur");
+    exit();
+}
 
 
 $name = "" ;
@@ -93,7 +99,7 @@ if(isset($_POST["cooking_time"])){
     $cookingTime = (int)$_POST["cooking_time"] ;
 }
 
-
+// SI AUCUN CHAMP N'EST REMPLI, ON NE FAIT RIEN
 if(!$name && !$ingredients && !$tags && !$filename && !$cookingTime && !$preparationTime && !$servings && !$description &&!$preparation ){
     $erreur = urlencode("Aucun champ n'a été rempli") ;
     header("Location:/ProjetWeb/pages/recette.php?id=$id&erreur=$erreur");
@@ -104,7 +110,7 @@ if(!$name && !$ingredients && !$tags && !$filename && !$cookingTime && !$prepara
 
 $db = new \gdb\RecepieDB();
 
-
+// On met à jour la recette dans la base de données
 $db->updateRecepie($id ,$name ,$description,$ingredients , $tags ,$filename ,$preparationTime, $preparation, $cookingTime ,$servings ) ;   
 
 header("Location:/ProjetWeb/pages/recette.php?id=$id");

@@ -74,7 +74,7 @@ if(isset($_POST["cooking_time"])){
     $cookingTime = (int)$_POST["cooking_time"] ;
 }
 
-
+// Si aucun champ n'est rempli, on affiche une erreur
 if(!$name && !$ingredients && !$tags && !$filename && !$cookingTime && !$preparationTime && !$servings && !$description &&!$preparation ){
     $erreur = urlencode("Aucun champ n'a été rempli") ;
     header("Location:/ProjetWeb/pages/forms/ajouter.php?erreur=$erreur");
@@ -87,14 +87,14 @@ $db = new \gdb\RecepieDB();
 
 
 
-
+// On ajoute la recette à la base de données
 $db->addRecepie($name ,$description,$ingredients , $tags ,$filename ,$preparationTime, $preparation, $cookingTime ,$servings ) ;   
 
 
 
 
 
-header("Location:/ProjetWeb/pages/recettes.php?hey");
+header("Location:/ProjetWeb/pages/recettes.php");
 exit();
 
 

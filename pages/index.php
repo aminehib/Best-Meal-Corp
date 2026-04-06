@@ -10,7 +10,7 @@
 <body>
 
 
-<?php include 'includes/header.php'; ?>
+<?php include 'includes/header.php'; ?> <!-- Inclusion de l'en-tête du site, qui contient la navigation et le logo -->
 
 <section class="hero">
     <div class="container hero-container">
@@ -68,6 +68,5 @@
     </div>
 </section>
 
-<?php include 'includes/footer.php'; 
+<?php include 'includes/footer.php'; ?> <!-- Inclusion du pied de page du site, qui contient les informations de contact et les liens vers les réseaux sociaux -->
 
-?>
