@@ -93,7 +93,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center; /* centre le contenu */
-    max-width: 600px;        /* limite la largeur */
     text-align: center;       /* centre le texte si multi-lignes */
 }
 

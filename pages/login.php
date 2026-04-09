@@ -21,6 +21,8 @@ require_once __DIR__."/includes/login.php";
 
 
 
+    ?>
+    <script src = "js/validation_client.js"></script>
 
 
 

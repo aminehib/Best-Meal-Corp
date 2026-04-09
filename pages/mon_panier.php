@@ -17,9 +17,7 @@
                 <span class="page-subtitle">Gestion des ingredients</span>
                 <h1>Mon panier</h1>
                 <p>Modifiez separement vos ingredients et vos tags dans deux espaces distincts.</p>
-                <?php if(isset($_GET['erreur'])): ?>
-                    <p style="color: red;"><?php echo htmlspecialchars(urldecode($_GET['erreur'])); ?></p>
-                <?php endif; ?>
+                
             </div>
 
             <div class="pantry-sections">
@@ -35,16 +33,8 @@
 
                     <?php foreach($ingredients as $ingredient): ?>
                         <article class="pantry-row">
-                            <div class="pantry-row-image pantry-image-trigger" id="<?= htmlspecialchars('pantry-image-trigger-' . $ingredient->id) ?>">
+                            <div class="pantry-row-image">
                                 <img src="/ProjetWeb/pages/images/uploads/<?= htmlspecialchars($ingredient->image_url) ?>" alt="<?= htmlspecialchars($ingredient->name) ?>">
-                                <?php if(isset($_SESSION["login"])): ?>
-                                <form action="/ProjetWeb/actions/update_Ingredient.php" method="POST" enctype="multipart/form-data" class="recipe-edit-form image-form is-hidden" data-form-id="pantry-image-form-1">
-                                    <input type="hidden" name="id" value="<?= htmlspecialchars($ingredient->id) ?>">
-                                    <label for="pantry-image-<?= htmlspecialchars($ingredient->id) ?>" class="sr-only">Changer l'image</label>
-                                    <input type="file" id="pantry-image-<?= htmlspecialchars($ingredient->id) ?>" name="img" accept="image/*" class="hidden-file-input">
-                    
-                                </form>
-                                <?php endif; ?>
                             </div>
 
                             <div class="pantry-row-content">
@@ -57,11 +47,21 @@
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                        <?php if(isset($_SESSION["login"])): ?>
-                                <form action="/ProjetWeb/actions/update_Ingredient.php" method="POST" class="recipe-edit-form is-hidden" data-form-id="pantry-name-form-<?= htmlspecialchars($ingredient->id) ?>">
+                                <?php if(isset($_SESSION["login"])): ?>
+                                <form action="/ProjetWeb/actions/update_Ingredient.php" method="POST" enctype="multipart/form-data" class="recipe-edit-form pantry-edit-form is-hidden" data-form-id="pantry-name-form-<?= htmlspecialchars($ingredient->id) ?>">
                                     <input type="hidden" name="id" value="<?= htmlspecialchars($ingredient->id) ?>">
-                                    <input type="text" name="name" value="<?= htmlspecialchars($ingredient->name) ?>" class="recipe-text-input">
-                                    <button type="submit" class="recipe-form-btn">Enregistrer</button>
+                                    <div class="pantry-edit-grid">
+                                        <div class="pantry-row-image pantry-image-trigger pantry-placeholder-box">
+                                            <img src="/ProjetWeb/pages/images/uploads/<?= htmlspecialchars($ingredient->image_url) ?>" alt="<?= htmlspecialchars($ingredient->name) ?>">
+                                            <label class="pantry-inline-label" for="pantry-image-<?= htmlspecialchars($ingredient->id) ?>">Image de l'ingredient</label>
+                                            <input type="file" id="pantry-image-<?= htmlspecialchars($ingredient->id) ?>" name="img" accept="image/*" class="recipe-text-input pantry-preview-input">
+                                        </div>
+                                        <div class="pantry-inline-form">
+                                            <label class="recipe-form-label" for="pantry-name-<?= htmlspecialchars($ingredient->id) ?>">Nom de l'ingredient</label>
+                                            <input type="text" id="pantry-name-<?= htmlspecialchars($ingredient->id) ?>" name="name" value="<?= htmlspecialchars($ingredient->name) ?>" class="recipe-text-input">
+                                            <button type="submit" class="recipe-form-btn">Enregistrer</button>
+                                        </div>
+                                    </div>
                                 </form>
                                 <?php endif; ?>
                             </div>
@@ -238,22 +238,16 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const preview = input.closest('.pantry-row-image').querySelector('img');
+        const previewBox = input.closest('.pantry-row-image, .pantry-placeholder-box');
+        const preview = previewBox ? previewBox.querySelector('img') : null;
         if (preview) {
             preview.src = URL.createObjectURL(input.files[0]);
             preview.alt = input.files[0].name;
         }
     });
- document.querySelectorAll('.hidden-file-input').forEach(function(input) {
-        input.addEventListener('change', function() {
-            if (input.files.length > 0) {
-                input.form.submit();
-            }
-        });
-    });
 
 });
 </script>
-
+<script src = "js/validation_client.js"></script>
 </body>
 </html>

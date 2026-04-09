@@ -8,6 +8,9 @@ class Recepie{
         ?>
         <div class = "recepie" id = "<?php echo htmlspecialchars($this->id) ?>" >
             <h2><?= $this->title ? htmlspecialchars($this->title) : '<span class="empty-placeholder">Sans titre</span>' ?></h2>
+            <?php if(isset($_SESSION["login"])): ?>
+                <a href="/ProjetWeb/actions/delete_recepie.php?id=<?= htmlspecialchars($this->id) ?>" class="edit-inline-btn delete-inline-btn" title="Supprimer la recette" onclick="return confirm('Supprimer cette recette ?');">🗑</a>
+            <?php endif; ?>
             <img src= "<?php echo "/ProjetWeb/pages/images/uploads/" .htmlspecialchars($this->image_url) ?>" alt="">
             <p> <?= $this->description ? htmlspecialchars($this->description) : '<span class="empty-placeholder">Aucune description.</span>' ?> </p>
             <a href="/ProjetWeb/pages/recette.php?id=<?php echo htmlspecialchars($this->id)?>" class="btn btn-primary">Voir la recette</a>

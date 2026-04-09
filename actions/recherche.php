@@ -51,6 +51,12 @@ if(!empty($name)){
 }
 
 
+[1,2,5];
+
+
+
+
+
 
 
 if(!empty($ingredients)){
@@ -64,6 +70,10 @@ if(!empty($ingredients)){
     }
 
 }
+
+
+
+
 
 
 
@@ -82,6 +92,8 @@ if(!empty($tag)){
     }
 
 }
+
+
 
 
 if(!empty($nameId)){

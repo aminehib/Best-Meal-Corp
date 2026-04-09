@@ -59,12 +59,13 @@ if(isset($_FILES["img"]) && $_FILES["img"]["error"] == 0){
 
 if(!$filename && !$name){
     $_SESSION["erreur"] = "Aucun champ n'a été rempli";
-    header("Location:/ProjetWeb/pages/forms/panier..php");
+    header("Location:/ProjetWeb/pages/forms/panier.php");
     exit();
 }
 
-if(empty($name)){
+if(empty($name) ){
     $name = $ingredient->name ;
+    $_SESSION["erreur"] = "Le nom de l'ingrédient ne peut pas être vide, le nom précédent a été conservé";
 }
 
 
