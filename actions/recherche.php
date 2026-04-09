@@ -31,7 +31,6 @@ $tagId= [] ;
 if(empty($name) && empty($ingredients) && empty($tag)){
     header("Location:/ProjetWeb/pages/recettes.php");
     exit();
-    
 }
 
 
@@ -44,16 +43,8 @@ if(!empty($name)){
     foreach($byName as $rec){
         array_push($nameId ,$rec->id);
     }
-    if(count($byName)== 0){
-        
-    }
-
+   
 }
-
-
-[1,2,5];
-
-
 
 
 
@@ -61,13 +52,13 @@ if(!empty($name)){
 
 if(!empty($ingredients)){
     $byIng = $db->getRecepiesByIngredients($ingredients);
+    header("Location:/ProjetWeb/pages/login.php");
+    
     $ingId= [] ;
     foreach($byIng as $rec){
         array_push($ingId , $rec->id);
     }
-    if(count($byIng)== 0){
-
-    }
+   
 
 }
 
@@ -86,10 +77,7 @@ if(!empty($tag)){
         array_push($tagId , $rec->id);
     }
 
-    if(count($tagId)== 0){
-        header("Location:/ProjetWeb/pages/recettes.php?n=");
-        exit();
-    }
+  
 
 }
 

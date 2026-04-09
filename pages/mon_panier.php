@@ -123,29 +123,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const article = document.createElement('article');
         article.className = 'new';
         article.innerHTML = `
-        <form action="/ProjetWeb/actions/add_Ingredient.php" method="POST" enctype="multipart/form-data"  >
-                <div class ="pantry-row-new pantry-row " >
-                                    
-            <div class="pantry-image-trigger pantry-placeholder-box">
-                
-                <img alt="Nouvel ingredient" class="pantry-preview-image">
-                <label class="pantry-inline-label" for="new-ingredient-image-${index}">Image de l'ingredient</label>
-                <input type="file" id="new-ingredient-image-${index}" name="img" accept="image/*" class="recipe-text-input pantry-preview-input">
-            </div>
-            <div class="pantry-row-content">
-                <div class="editable-header">
-                    <h3>Nouvel ingredient</h3>
-                    <!-- Bouton X pour supprimer un ingredient ajoute avec + -->
-                    <button type="button" class="edit-inline-btn pantry-remove-btn" title="Supprimer">✕</button>
+            <form action="/ProjetWeb/actions/add_Ingredient.php" method="POST" enctype="multipart/form-data">
+                <div class="pantry-row-new pantry-row">
+                    <div class="pantry-image-trigger pantry-placeholder-box">
+                        <img alt="Nouvel ingredient" class="pantry-preview-image">
+                        <label class="pantry-inline-label" for="new-ingredient-image-${index}">Image de l'ingredient</label>
+                        <input type="file" id="new-ingredient-image-${index}" name="img" accept="image/*" class="recipe-text-input pantry-preview-input">
+                    </div>
+                    <div class="pantry-row-content">
+                        <div class="editable-header">
+                            <h3>Nouvel ingredient</h3>
+                            <button type="button" class="edit-inline-btn pantry-remove-btn" title="Supprimer">✕</button>
+                        </div>
+                        <div class="recipe-edit-form pantry-inline-form">
+                            <label class="recipe-form-label" for="new-ingredient-name-${index}">Nom de l'ingredient</label>
+                            <input type="text" id="new-ingredient-name-${index}" name="name" class="recipe-text-input" placeholder="Ex : Tomate">
+                        </div>
+                    </div>
+                    <button type="submit" class="recipe-form-btn">Enregistrer</button>
                 </div>
-                <div class="recipe-edit-form pantry-inline-form">
-                    <label class="recipe-form-label" for="new-ingredient-name-${index}">Nom de l'ingredient</label>
-                    <input type="text" id="new-ingredient-name-${index}" name="name" class="recipe-text-input" placeholder="Ex : Tomate">
-                </div>
-
-            </div>
-             <button type="submit" class="recipe-form-btn">Enregistrer</button>
-            </div>
             </form>
         `;
         return article;
@@ -156,18 +152,16 @@ document.addEventListener('DOMContentLoaded', function() {
         article.className = 'pantry-tag-row pantry-tag-add';
         article.innerHTML = `
             <form action="/ProjetWeb/actions/add_Tag.php" method="POST">
-            <div class="section-head">
-                <h3>Nouveau tag</h3>
-                <!-- Bouton X pour supprimer un tag ajoute avec + -->
-                <button type="button" class="edit-inline-btn pantry-remove-btn" title="Supprimer">✕</button>
-            </div>
-            <div class="recipe-edit-form pantry-inline-form">
-                <label class="recipe-form-label" for="new-tag-name-${index}">Nom du tag</label>
-                <input type="text" id="new-tag-name-${index}" name="name" class="recipe-text-input" placeholder="Ex : Dessert">
-            </div>
-            <button type="submit" class="recipe-form-btn">Enregistrer</button>
+                <div class="section-head">
+                    <h3>Nouveau tag</h3>
+                    <button type="button" class="edit-inline-btn pantry-remove-btn" title="Supprimer">✕</button>
+                </div>
+                <div class="recipe-edit-form pantry-inline-form">
+                    <label class="recipe-form-label" for="new-tag-name-${index}">Nom du tag</label>
+                    <input type="text" id="new-tag-name-${index}" name="name" class="recipe-text-input" placeholder="Ex : Dessert">
+                </div>
+                <button type="submit" class="recipe-form-btn">Enregistrer</button>
             </form>
-
         `;
         return article;
     }
@@ -175,74 +169,101 @@ document.addEventListener('DOMContentLoaded', function() {
     let ingredientIndex = document.querySelectorAll('.pantry-row').length + 1;
     let tagIndex = document.querySelectorAll('.pantry-tag-row').length + 1;
 
+    function toggleEditForm(button) {
+        const form = document.querySelector('[data-form-id="' + button.dataset.target + '"]');
+        if (!form) {
+            return;
+        }
+
+        form.classList.toggle('is-hidden');
+        button.classList.toggle('editing');
+        button.textContent = form.classList.contains('is-hidden') ? '✎' : '✕';
+    }
+
+    function addNewRow(button) {
+        const isIngredient = button.dataset.addType === 'ingredient';
+        const list = document.getElementById(isIngredient ? 'pantry-ingredient-list' : 'pantry-tag-list');
+
+        if (!list || list.querySelector('.pantry-row-new, .pantry-tag-add')) {
+            return;
+        }
+
+        const newRow = isIngredient ? createIngredientRow(ingredientIndex++) : createTagRow(tagIndex++);
+        list.prepend(newRow);
+        button.disabled = true;
+
+        const input = newRow.querySelector('input[type="text"]');
+        if (input) {
+            input.focus();
+        }
+    }
+
+    function removeNewRow(button) {
+        const row = button.closest('article');
+        if (!row) {
+            return;
+        }
+
+        const type = row.querySelector('.pantry-row-new') ? 'ingredient' : 'tag';
+        row.remove();
+
+        const addButton = document.querySelector('.pantry-add-btn[data-add-type="' + type + '"]');
+        if (addButton) {
+            addButton.disabled = false;
+        }
+    }
+
+    function openImageInput(box) {
+        const input = box.querySelector('input[type="file"]');
+        if (input) {
+            input.click();
+        }
+    }
+
+    function updatePreview(input) {
+        if (!input.files || !input.files[0]) {
+            return;
+        }
+
+        const previewBox = input.closest('.pantry-row-image, .pantry-placeholder-box');
+        const preview = previewBox ? previewBox.querySelector('img') : null;
+
+        if (preview) {
+            preview.src = URL.createObjectURL(input.files[0]);
+            preview.alt = input.files[0].name;
+        }
+    }
+
     document.addEventListener('click', function(e) {
         const removeButton = e.target.closest('.pantry-remove-btn');
         if (removeButton) {
-            // Supprime uniquement les nouveaux blocs ajoutes avec le bouton +
-            const row = removeButton.closest('article');
-            if (row) {
-                row.remove();
-                // Re-enable the add button
-                const isIngredient = row.querySelector('.pantry-row-new') !== null;
-                const addBtn = document.querySelector(`.pantry-add-btn[data-add-type="${isIngredient ? 'ingredient' : 'tag'}"]`);
-                if (addBtn) addBtn.disabled = false;
-            }
+            removeNewRow(removeButton);
             return;
         }
 
         const editButton = e.target.closest('[data-target]');
         if (editButton) {
             e.preventDefault();
-            const form = document.querySelector('[data-form-id="' + editButton.dataset.target + '"]');
-
-            if (!form) {
-                return;
-            }
-
-            form.classList.toggle('is-hidden');
-            editButton.classList.toggle('editing');
-            // Change le bouton d'edition 
-            editButton.textContent = form.classList.contains('is-hidden') ? '✎' : '✕';
+            toggleEditForm(editButton);
             return;
         }
 
         const addButton = e.target.closest('.pantry-add-btn');
         if (addButton) {
-            const isIngredient = addButton.dataset.addType === 'ingredient';
-            const list = document.getElementById(isIngredient ? 'pantry-ingredient-list' : 'pantry-tag-list');
-            // Check if there's already a new row
-            const existingNew = list.querySelector('.pantry-row-new, .pantry-tag-add');
-            if (existingNew) {
-                return;
-            }
-            const newRow = isIngredient ? createIngredientRow(ingredientIndex++) : createTagRow(tagIndex++);
-            list.prepend(newRow);
-            newRow.querySelector('input[type="text"]').focus();
-            // Disable the add button
-            addButton.disabled = true;
+            addNewRow(addButton);
             return;
         }
 
         const imageBox = e.target.closest('.pantry-image-trigger');
         if (imageBox && !e.target.closest('a, input, label, button')) {
-            const input = imageBox.querySelector('input[type="file"]');
-            if (input) {
-                input.click();
-            }
+            openImageInput(imageBox);
         }
     });
 
     document.addEventListener('change', function(e) {
         const input = e.target.closest('.pantry-preview-input');
-        if (!input || !input.files || !input.files[0]) {
-            return;
-        }
-
-        const previewBox = input.closest('.pantry-row-image, .pantry-placeholder-box');
-        const preview = previewBox ? previewBox.querySelector('img') : null;
-        if (preview) {
-            preview.src = URL.createObjectURL(input.files[0]);
-            preview.alt = input.files[0].name;
+        if (input) {
+            updatePreview(input);
         }
     });
 

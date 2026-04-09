@@ -96,68 +96,77 @@ class RecepieDB extends DB{
     }
 
     // Recherche par ingredient
-    public function getRecepiesByIngredients(array $ingredients): array
-    {
-        if ($ingredients === []) {
-            return [];
-        }
-
-        $conditions = [];
-        $params = [];
-
-        foreach ($ingredients as $index => $ingredient) {
-            $conditions[] = "i.name LIKE :ingredient$index";
-            $params[":ingredient$index"] = "%" . $ingredient . "%";
-        }
-
-        $statement = $this->pdo->prepare(
-            "SELECT DISTINCT r.*
-             FROM recipe r
-             INNER JOIN recipe_ingredient ri ON r.id = ri.recipe_id
-             INNER JOIN ingredient i ON ri.ingredient_id = i.id
-             WHERE " . implode(" OR ", $conditions)
-        );
-
-        if ($statement !== false) {
-            $statement->execute($params);
-
-            return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
-        }
-
+   public function getRecepiesByIngredients(array $ingredients): array
+{
+    if (empty($ingredients)) {
         return [];
     }
+
+    // Crée des placeholders pour chaque ingrédient
+    $placeholders = [];
+    $params = [];
+    foreach ($ingredients as $index => $ingredient) {
+        $placeholders[] = ":ing$index";
+        $params[":ing$index"] = $ingredient;
+    }
+
+    $sql = "
+        SELECT r.*
+        FROM recipe r
+        INNER JOIN recipe_ingredient ri ON r.id = ri.recipe_id
+        INNER JOIN ingredient i ON ri.ingredient_id = i.id
+        WHERE i.name IN (" . implode(", ", $placeholders) . ")
+        GROUP BY r.id
+        HAVING COUNT(DISTINCT i.name) = :ingredient_count
+    ";
+
+    $params[':ingredient_count'] = count($ingredients);
+
+    $statement = $this->pdo->prepare($sql);
+
+    if ($statement !== false) {
+        $statement->execute($params);
+        return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
+    }
+
+    return [];
+}
 
     // Recherche par tag
     public function getRecepiesByTags(array $tags): array
-    {
-        if ($tags === []) {
-            return [];
-        }
-
-        $conditions = [];
-        $params = [];
-
-        foreach ($tags as $index => $tag) {
-            $conditions[] = "t.name LIKE :tag$index";
-            $params[":tag$index"] = "%" . $tag . "%";
-        }
-
-        $statement = $this->pdo->prepare(
-            "SELECT DISTINCT r.*
-             FROM recipe r
-             INNER JOIN recipe_tag rt ON r.id = rt.recipe_id
-             INNER JOIN tag t ON rt.tag_id = t.id
-             WHERE " . implode(" OR ", $conditions)
-        );
-
-        if ($statement !== false) {
-            $statement->execute($params);
-
-            return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
-        }
-
+{
+    if (empty($tags)) {
         return [];
     }
+
+    $placeholders = [];
+    $params = [];
+    foreach ($tags as $index => $tag) {
+        $placeholders[] = ":tag$index";
+        $params[":tag$index"] = $tag; // pas besoin de % si tu veux correspondance exacte
+    }
+
+    $sql = "
+        SELECT r.*
+        FROM recipe r
+        INNER JOIN recipe_tag rt ON r.id = rt.recipe_id
+        INNER JOIN tag t ON rt.tag_id = t.id
+        WHERE t.name IN (" . implode(", ", $placeholders) . ")
+        GROUP BY r.id
+        HAVING COUNT(DISTINCT t.name) = :tag_count
+    ";
+
+    $params[':tag_count'] = count($tags);
+
+    $statement = $this->pdo->prepare($sql);
+
+    if ($statement !== false) {
+        $statement->execute($params);
+        return $statement->fetchAll(\PDO::FETCH_CLASS, "\classe\Recepie");
+    }
+
+    return [];
+}
 
     // Ajouter une recette
     public function addRecepie(
