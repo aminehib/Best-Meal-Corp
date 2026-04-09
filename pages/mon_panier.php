@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     
             <div class="pantry-image-trigger pantry-placeholder-box">
                 
-                <img src="/ProjetWeb/pages/images/logo.png" alt="Nouvel ingredient" class="pantry-preview-image">
+                <img alt="Nouvel ingredient" class="pantry-preview-image">
                 <label class="pantry-inline-label" for="new-ingredient-image-${index}">Image de l'ingredient</label>
                 <input type="file" id="new-ingredient-image-${index}" name="img" accept="image/*" class="recipe-text-input pantry-preview-input">
             </div>

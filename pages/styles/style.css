@@ -1195,3 +1195,32 @@ body {
     border-radius: 10px;
 }
 
+/* ===== Bouton supprimer recette ===== */
+
+.delete-recipe-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d35400;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+/* Hover */
+.delete-recipe-btn:hover {
+    background-color: #b94700;
+    transform: scale(1.08);
+}
+
+/* Pour que le bouton se positionne correctement */
+.recepie {
+    position: relative;
+}
