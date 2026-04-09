@@ -29,7 +29,7 @@
         </div>
 
         <div class="hero-image">
-            <img src="images/logo.png" alt="Cuisine et recettes">
+            <img src="images/logo(1).png" alt="Cuisine et recettes">
         </div>
     </div>
 </section>
