@@ -1188,3 +1188,10 @@ body {
  margin-left: 10px;
 }
 
+.pantry-preview-image{
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
