@@ -17,7 +17,9 @@
                 <span class="page-subtitle">Gestion des ingredients</span>
                 <h1>Mon panier</h1>
                 <p>Modifiez separement vos ingredients et vos tags dans deux espaces distincts.</p>
-                
+                <?php if (!empty($erreurPanier)): ?>
+                    <p class="php-error-message"><?= htmlspecialchars($erreurPanier) ?></p>
+                <?php endif; ?>
             </div>
 
             <div class="pantry-sections">
@@ -292,12 +294,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 </script>
-<?php if (!empty($erreurPanier)): ?>
-<script>
-var erreur = <?= json_encode($erreurPanier) ?>;
-</script>
-<script src="/ProjetWeb/pages/js/validation.js"></script>
-<?php endif; ?>
 <?php if (!empty($formulairePanierAOuvrir)): ?>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
