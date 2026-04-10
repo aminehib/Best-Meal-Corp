@@ -20,8 +20,6 @@ if(isset($_POST["username"]) && isset($_POST["password"])  ){
         }
         if(in_array("Veuillez entrer votre password", $error) || in_array("Password incorrect", $error)){ // Si le message d'erreur contient le mot "password", on stocke l'erreur dans une variable de session spécifique pour le champ de password
             $_SESSION["erreur_password"] = in_array("Veuillez entrer votre password", $error) ? "Veuillez entrer votre password" : "Password incorrect" ;
-        }else{ // Sinon, on stocke l'erreur dans une variable de session générique pour l'afficher dans le formulaire de connexion
-            $_SESSION["erreur"] = $error[0] ;
         }
         header("Location:/ProjetWeb/pages/login.php") ; // Redirection vers le formulaire de connexion .
         exit();

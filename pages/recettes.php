@@ -22,7 +22,7 @@ if(isset($_SESSION["recherche"])){// Si une recherche a été effectuée, on aff
 
     $content = $_SESSION["recherche"] ;
     if(empty($content)){// Si la recherche n'a donné aucun résultat, on affiche un message d'erreur
-        $content ="<script src =\"js/recherche.js\" ></script>" ;
+        $content ="<div class=\"empty-state\"><h2>Aucune recette trouvée 😕</h2><p>Essayez avec d'autres mots-clés.</p></div>" ;
     }
     unset($_SESSION["recherche"]);// On supprime la variable de session de recherche pour éviter d'afficher les résultats de la recherche précédente si l'utilisateur rafraîchit la page
 

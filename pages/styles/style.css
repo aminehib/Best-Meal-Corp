@@ -1233,3 +1233,32 @@ body {
 }
 
 
+.general-error-message{
+    color: #b42318 !important;
+    font-size:30px !important;
+    margin : "6px 0 0";
+}
+
+
+.empty-state {
+    position: absolute;
+    left: 40%;
+    text-align: center;
+    background: #ffffff;
+    padding: 40px 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .empty-state h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .empty-state p {
+    font-size: 16px;
+    color: #777;
+  }
+
+
