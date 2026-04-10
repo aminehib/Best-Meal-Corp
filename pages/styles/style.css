@@ -1225,8 +1225,11 @@ body {
     position: relative;
 }
 
+
 .field-error-message{
-    color: #b42318;
-    font-size:30px;
-    margin : 20px auto;
+    color: #b42318 !important;
+    font-size:0.9rem !important;
+    margin : "6px 0 0";
 }
+
+

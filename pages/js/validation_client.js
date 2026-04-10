@@ -1,112 +1,292 @@
 document.addEventListener("DOMContentLoaded", function () {
-    function erreur(champ, message) {
-        alert(message);
-        if (champ) {
-            champ.focus();
+    function trouverBlocDuChamp(champ) {
+        let bloc = null;
+
+        if (!champ) {
+            return null;
         }
-        return false;
+
+        bloc = champ.closest(".form-group");
+
+        if (!bloc) {
+            bloc = champ.closest(".pantry-inline-form");
+        }
+
+        if (!bloc) {
+            bloc = champ.closest(".meta-item");
+        }
+
+        if (!bloc) {
+            bloc = champ.closest(".recipe-edit-form");
+        }
+
+        if (!bloc) {
+            bloc = champ.closest(".admin-form");
+        }
+
+        if (!bloc) {
+            bloc = champ.closest(".login-form");
+        }
+
+        if (!bloc) {
+            bloc = champ.parentElement;
+        }
+
+        return bloc;
     }
 
-    const loginForm = document.querySelector(".login-form");
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
-            const username = loginForm.querySelector('input[name="username"]');
-            const password = loginForm.querySelector('input[name="password"]');
+    function enleverErreur(champ) {
+        let bloc = null;
+        let message = null;
 
-            if (username.value.trim() === "") {
-                e.preventDefault();
-                erreur(username, "Veuillez entrer le username.");
+        if (!champ) {
+            return;
+        }
+
+        champ.classList.remove("field-error");
+        champ.removeAttribute("aria-invalid");
+        champ.style.borderColor = "";
+
+        bloc = trouverBlocDuChamp(champ);
+
+        if (bloc) {
+            message = bloc.querySelector(".field-error-message");
+
+            if (message) {
+                message.remove();
+            }
+        }
+    }
+
+    function afficherErreur(champ, texte) {
+        let bloc = null;
+        let message = null;
+
+        if (!champ) {
+            return;
+        }
+
+        enleverErreur(champ);
+
+        champ.classList.add("field-error");
+        champ.setAttribute("aria-invalid", "true");
+        champ.style.borderColor = "#b42318";
+
+        bloc = trouverBlocDuChamp(champ);
+
+        if (bloc) {
+            message = document.createElement("p");
+            message.className = "field-error-message";
+            message.textContent = texte;
+            bloc.appendChild(message);
+        }
+    }
+
+    function viderLesErreursDuFormulaire(formulaire) {
+        let messages = formulaire.querySelectorAll(".field-error-message");
+        let champs = formulaire.querySelectorAll(".field-error");
+        let i = 0;
+
+        for (i = 0; i < messages.length; i = i + 1) {
+            messages[i].remove();
+        }
+
+        for (i = 0; i < champs.length; i = i + 1) {
+            champs[i].classList.remove("field-error");
+            champs[i].removeAttribute("aria-invalid");
+            champs[i].style.borderColor = "";
+        }
+    }
+
+    function verifierChampVide(champ, texteErreur) {
+        if (!champ) {
+            return true;
+        }
+
+        if (champ.value.trim() === "") {
+            afficherErreur(champ, texteErreur);
+            return false;
+        }
+
+        enleverErreur(champ);
+        return true;
+    }
+
+    function verifierNombreMinimum(champ, minimum, texteErreur) {
+        let valeur = "";
+
+        if (!champ) {
+            return true;
+        }
+
+        valeur = champ.value.trim();
+
+        if (valeur === "") {
+            afficherErreur(champ, texteErreur);
+            return false;
+        }
+
+        if (Number(valeur) < minimum) {
+            afficherErreur(champ, texteErreur);
+            return false;
+        }
+
+        enleverErreur(champ);
+        return true;
+    }
+
+    function verifierSelect(champ, texteErreur) {
+        if (!champ) {
+            return true;
+        }
+
+        if (champ.selectedOptions.length === 0) {
+            afficherErreur(champ, texteErreur);
+            return false;
+        }
+
+        enleverErreur(champ);
+        return true;
+    }
+
+    function focusPremierChampErreur(listeChamps) {
+        let i = 0;
+
+        for (i = 0; i < listeChamps.length; i = i + 1) {
+            if (listeChamps[i] && listeChamps[i].classList.contains("field-error")) {
+                listeChamps[i].focus();
                 return;
             }
+        }
+    }
 
-            if (password.value.trim() === "") {
-                e.preventDefault();
-                erreur(password, "Veuillez entrer le password.");
+    document.addEventListener("input", function (event) {
+        let champ = event.target;
+
+        if (champ.matches("input, textarea")) {
+            enleverErreur(champ);
+        }
+    });
+
+    document.addEventListener("change", function (event) {
+        let champ = event.target;
+
+        if (champ.matches("select, input[type='file']")) {
+            enleverErreur(champ);
+        }
+    });
+
+    let formulaireConnexion = document.querySelector(".login-form");
+
+    if (formulaireConnexion) {
+        formulaireConnexion.addEventListener("submit", function (event) {
+            let champUsername = formulaireConnexion.querySelector('input[name="username"]');
+            let champPassword = formulaireConnexion.querySelector('input[name="password"]');
+            let formulaireValide = true;
+
+            viderLesErreursDuFormulaire(formulaireConnexion);
+
+            if (!verifierChampVide(champUsername, "Veuillez entrer le username.")) {
+                formulaireValide = false;
+            }
+
+            if (!verifierChampVide(champPassword, "Veuillez entrer le password.")) {
+                formulaireValide = false;
+            }
+
+            if (formulaireValide === false) {
+                event.preventDefault();
+                focusPremierChampErreur([champUsername, champPassword]);
             }
         });
     }
 
-    const recipeForm = document.querySelector(".recipe-global-form");
-    if (recipeForm) {
-        recipeForm.addEventListener("submit", function (e) {
-            const title = recipeForm.querySelector('input[name="title"]');
-            const description = recipeForm.querySelector('textarea[name="description"]');
-            const preparationTime = recipeForm.querySelector('input[name="preparation_time"]');
-            const cookingTime = recipeForm.querySelector('input[name="cooking_time"]');
-            const servings = recipeForm.querySelector('input[name="servings"]');
-            const ingredients = recipeForm.querySelector('select[name="ingredients[]"]');
-            const tags = recipeForm.querySelector('select[name="tags[]"]');
-            const preparation = recipeForm.querySelector('textarea[name="preparation"]');
+    let formulaireRecette = document.querySelector(".recipe-global-form");
 
-            if (title && title.value.trim() === "") {
-                e.preventDefault();
-                erreur(title, "Veuillez entrer le titre.");
-                return;
+    if (formulaireRecette) {
+        formulaireRecette.addEventListener("submit", function (event) {
+            let champTitre = formulaireRecette.querySelector('input[name="title"]');
+            let champDescription = formulaireRecette.querySelector('textarea[name="description"]');
+            let champTempsPreparation = formulaireRecette.querySelector('input[name="preparation_time"]');
+            let champTempsCuisson = formulaireRecette.querySelector('input[name="cooking_time"]');
+            let champPersonnes = formulaireRecette.querySelector('input[name="servings"]');
+            let champIngredients = formulaireRecette.querySelector('select[name="ingredients[]"]');
+            let champTags = formulaireRecette.querySelector('select[name="tags[]"]');
+            let champPreparation = formulaireRecette.querySelector('textarea[name="preparation"]');
+            let formulaireValide = true;
+
+            viderLesErreursDuFormulaire(formulaireRecette);
+
+            if (!verifierChampVide(champTitre, "Veuillez entrer le titre.")) {
+                formulaireValide = false;
             }
 
-            if (description && description.value.trim() === "") {
-                e.preventDefault();
-                erreur(description, "Veuillez entrer la description.");
-                return;
+            if (!verifierChampVide(champDescription, "Veuillez entrer la description.")) {
+                formulaireValide = false;
             }
 
-            if (preparationTime && (preparationTime.value.trim() === "" || Number(preparationTime.value) < 0)) {
-                e.preventDefault();
-                erreur(preparationTime, "Le temps de preparation doit etre superieur ou egal a 0.");
-                return;
+            if (!verifierNombreMinimum(champTempsPreparation, 0, "Le temps de preparation doit etre superieur ou egal a 0.")) {
+                formulaireValide = false;
             }
 
-            if (cookingTime && (cookingTime.value.trim() === "" || Number(cookingTime.value) < 0)) {
-                e.preventDefault();
-                erreur(cookingTime, "Le temps de cuisson doit etre superieur ou egal a 0.");
-                return;
+            if (!verifierNombreMinimum(champTempsCuisson, 0, "Le temps de cuisson doit etre superieur ou egal a 0.")) {
+                formulaireValide = false;
             }
 
-            if (servings && (servings.value.trim() === "" || Number(servings.value) < 1)) {
-                e.preventDefault();
-                erreur(servings, "Le nombre de personnes doit etre superieur ou egal a 1.");
-                return;
+            if (!verifierNombreMinimum(champPersonnes, 1, "Le nombre de personnes doit etre superieur ou egal a 1.")) {
+                formulaireValide = false;
             }
 
-            if (ingredients && ingredients.selectedOptions.length === 0) {
-                e.preventDefault();
-                erreur(ingredients, "Veuillez choisir au moins un ingredient.");
-                return;
+            if (!verifierSelect(champIngredients, "Veuillez choisir au moins un ingredient.")) {
+                formulaireValide = false;
             }
 
-            if (tags && tags.selectedOptions.length === 0) {
-                e.preventDefault();
-                erreur(tags, "Veuillez choisir au moins un tag.");
-                return;
+            if (!verifierSelect(champTags, "Veuillez choisir au moins un tag.")) {
+                formulaireValide = false;
             }
 
-            if (preparation && preparation.value.trim() === "") {
-                e.preventDefault();
-                erreur(preparation, "Veuillez entrer la preparation.");
+            if (!verifierChampVide(champPreparation, "Veuillez entrer la preparation.")) {
+                formulaireValide = false;
+            }
+
+            if (formulaireValide === false) {
+                event.preventDefault();
+                focusPremierChampErreur([
+                    champTitre,
+                    champDescription,
+                    champTempsPreparation,
+                    champTempsCuisson,
+                    champPersonnes,
+                    champIngredients,
+                    champTags,
+                    champPreparation
+                ]);
             }
         });
     }
 
-    document.addEventListener("submit", function (e) {
-        const form = e.target;
+    document.addEventListener("submit", function (event) {
+        let formulaire = event.target;
+        let champNom = null;
 
-        if (form.matches('form[action*="add_Ingredient"], form[action*="update_Ingredient"]')) {
-            const name = form.querySelector('input[name="name"]');
+        if (formulaire.matches('form[action*="add_Ingredient"], form[action*="update_Ingredient"]')) {
+            viderLesErreursDuFormulaire(formulaire);
+            champNom = formulaire.querySelector('input[name="name"]');
 
-            if (name && name.value.trim() === "") {
-                e.preventDefault();
-                erreur(name, "Veuillez entrer le nom de l'ingredient.");
+            if (!verifierChampVide(champNom, "Veuillez entrer le nom de l'ingredient.")) {
+                event.preventDefault();
+                focusPremierChampErreur([champNom]);
             }
         }
 
-        if (form.matches('form[action*="add_Tag"], form[action*="update_Tag"]')) {
-            const name = form.querySelector('input[name="name"]');
+        if (formulaire.matches('form[action*="add_Tag"], form[action*="update_Tag"]')) {
+            viderLesErreursDuFormulaire(formulaire);
+            champNom = formulaire.querySelector('input[name="name"]');
 
-            if (name && name.value.trim() === "") {
-                e.preventDefault();
-                erreur(name, "Veuillez entrer le nom du tag.");
+            if (!verifierChampVide(champNom, "Veuillez entrer le nom du tag.")) {
+                event.preventDefault();
+                focusPremierChampErreur([champNom]);
             }
         }
     });
 });
-

@@ -50,6 +50,12 @@ if(isset($_POST["title"])){
     $name = $_POST["title"];
 }
 
+if(!$name){
+    $_SESSION["erreur"] = "Le champ title doit etre rempli";
+     header("Location:/ProjetWeb/pages/forms/ajouter.php") ;
+     exit() ;
+}
+
 
 if(isset($_POST["ingredients"])){
     $ingredients = $_POST["ingredients"] ;

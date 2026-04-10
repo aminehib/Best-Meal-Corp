@@ -34,8 +34,13 @@ if(!isset($_SESSION["login"])){
                 <form action="/ProjetWeb/actions/ajouter.php" method="POST" enctype="multipart/form-data" class="admin-form">
 
                     <div class="form-group full-width">
-                        <label for="title">Titre</label>
+                        <label for="title">Titre *</label>
                         <input type="text" id="title" name="title" placeholder="Ex : Pizza Maison">
+                        <?php if(isset($_SESSION["erreur"])): ?>
+                            <span class="field-error-message"><?= $_SESSION["erreur"] ?></span>
+                            <?php unset($_SESSION["erreur"]) ;?>
+                        <?php endif; ?>
+
                     </div>
 
                     <div class="form-group full-width">
@@ -103,15 +108,7 @@ if(!isset($_SESSION["login"])){
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"></script>
-<?php
-if(isset($_SESSION["erreur"])){
-    ?> <script>var erreur = "<?= $_SESSION["erreur"]?>";</script> ;
-    <script src = '/ProjetWeb/pages/js/validation.js'></script>;
-    <?php   
-    unset($_SESSION["erreur"]);
-}
 
-?>
 
 
 <script>
@@ -127,12 +124,8 @@ $(document).ready(function() {
     });
 });
 </script>
+<script src = '/ProjetWeb/pages/js/validation_ajout.js'></script>
 
 </body>
 </html>
-
-
-
-
-
 
