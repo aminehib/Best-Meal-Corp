@@ -20,7 +20,7 @@
 
     <div class="recette-top">
      <div class="recette-image admin-block clickable-image-block" id="image-trigger">
-      <img src="/ProjetWeb/pages/images/uploads/<?= htmlspecialchars($recette->image_url) ?>" alt="<?= htmlspecialchars($recette->name) ?>" id="recipe-image">
+      <img src="/ProjetWeb/pages/images/uploads/<?= htmlspecialchars($recette->image_url) ?>" alt="<?= htmlspecialchars($recette->title) ?>" id="recipe-image">
 
       <?php if(isset($_SESSION["login"])): ?>
        <label for="image" class="sr-only">Changer l'image</label>

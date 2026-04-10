@@ -17,8 +17,13 @@
                 <span class="page-subtitle">Gestion des ingredients</span>
                 <h1>Mon panier</h1>
                 <p>Modifiez separement vos ingredients et vos tags dans deux espaces distincts.</p>
-                
+                <?php if(isset($_SESSION["erreur"])): ?>
+                    <div class="field-error-message"><?= $_SESSION["erreur"] ?></div>
+                    <?php unset($_SESSION["erreur"]) ;?>
             </div>
+            <?php endif; ?>
+            
+
 
             <div class="pantry-sections">
                 <section class="pantry-section">

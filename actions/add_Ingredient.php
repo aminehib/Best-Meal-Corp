@@ -18,6 +18,11 @@ $filename = null ;
 if(isset($_POST["name"])){
     $name = $_POST["name"] ;
 }
+if(!$name){
+    $_SESSION["erreur"] = "Le champ name doit etre rempli";
+     header("Location:/ProjetWeb/pages/panier.php") ;
+     exit() ;
+}
 
 
 if(isset($_FILES["img"]) && $_FILES["img"]["error"] == 0){

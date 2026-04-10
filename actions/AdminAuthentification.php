@@ -7,6 +7,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])  ){
     $log = new classe\Admin();
     $username = htmlspecialchars($_POST["username"]);
     $password = $_POST["password"];
+    $error = [] ;
     $error = $log->connect( $username , $password) ; // On appelle la méthode de connexion de la classe Admin pour vérifier les identifiants de l'utilisateur et stocker le message d'erreur éventuel dans une variable
     if(empty($error)){
         $_SESSION["login"] = true ;// On stocke une variable de session pour indiquer que l'utilisateur est connecté
@@ -14,7 +15,14 @@ if(isset($_POST["username"]) && isset($_POST["password"])  ){
         header("Location:$src") ;// Redirection vers la page d'où l'utilisateur vient ou vers la page d'accueil si la source n'est pas définie
         exit();
     }else{
-        $_SESSION["erreur"] = $error ; // On stocke le message d'erreur dans une variable de session pour l'afficher dans le formulaire de connexion
+        if(in_array( "Veuillez entrer votre username", $error) || in_array("Username incorrect", $error)){ // Si le message d'erreur contient le mot "username", on stocke l'erreur dans une variable de session spécifique pour le champ de username
+            $_SESSION["erreur_username"] = in_array("Veuillez entrer votre username", $error) ? "Veuillez entrer votre username" : "Username incorrect" ;
+        }
+        if(in_array("Veuillez entrer votre password", $error) || in_array("Password incorrect", $error)){ // Si le message d'erreur contient le mot "password", on stocke l'erreur dans une variable de session spécifique pour le champ de password
+            $_SESSION["erreur_password"] = in_array("Veuillez entrer votre password", $error) ? "Veuillez entrer votre password" : "Password incorrect" ;
+        }else{ // Sinon, on stocke l'erreur dans une variable de session générique pour l'afficher dans le formulaire de connexion
+            $_SESSION["erreur"] = $error[0] ;
+        }
         header("Location:/ProjetWeb/pages/login.php") ; // Redirection vers le formulaire de connexion .
         exit();
     }

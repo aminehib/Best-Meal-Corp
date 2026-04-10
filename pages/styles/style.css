@@ -562,7 +562,7 @@ body {
  background-color: white !important;
 }
 
-/* PAGE FORMULAIRE ADMIN */
+/* PAGE FORMULAIRE ADMIN  ajouter*/
 .form-page {
  padding: 50px 0;
 }
@@ -1223,4 +1223,10 @@ body {
 /* Pour que le bouton se positionne correctement */
 .recepie {
     position: relative;
+}
+
+.field-error-message{
+    color: #b42318;
+    font-size:30px;
+    margin : 20px auto;
 }

@@ -112,3 +112,8 @@ body {
     cursor: pointer;
     margin-left: 10px;
 }
+.field-error-message{
+    color: #b42318;
+    font-size:0.9rem;
+    margin : "6px 0 0";
+}

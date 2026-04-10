@@ -53,7 +53,7 @@ if(!empty($_POST["name"])){
 
 // Si le champ name est vide, on redirige vers la page de panier avec une erreur
 if(!$name){
-    $_SESSION["erreur"] = "Le champ name est obligatoire";
+    $_SESSION["erreur"] = "Le nom du tag ne peut pas être vide, le nom précédent a été conservé";
      header("Location:/ProjetWeb/pages/panier.php") ;
      exit() ;
 }
