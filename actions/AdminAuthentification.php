@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(session_status() === PHP_SESSION_NONE){
+ session_start();
+}
+// Vérifie les identifiants admin puis ouvre une session si la connexion est valide.
 require_once __DIR__."/../Autoload.php" ;
 Autoload::register();
 
@@ -20,8 +23,6 @@ if(isset($_POST["username"]) && isset($_POST["password"])  ){
         }
         if(in_array("Veuillez entrer votre password", $error) || in_array("Password incorrect", $error)){ // Si le message d'erreur contient le mot "password", on stocke l'erreur dans une variable de session spécifique pour le champ de password
             $_SESSION["erreur_password"] = in_array("Veuillez entrer votre password", $error) ? "Veuillez entrer votre password" : "Password incorrect" ;
-        }else{ // Sinon, on stocke l'erreur dans une variable de session générique pour l'afficher dans le formulaire de connexion
-            $_SESSION["erreur"] = $error[0] ;
         }
         header("Location:/ProjetWeb/pages/login.php") ; // Redirection vers le formulaire de connexion .
         exit();
@@ -31,4 +32,3 @@ if(isset($_POST["username"]) && isset($_POST["password"])  ){
     header("Location:/ProjetWeb/pages/login.php") ; // Redirection vers le formulaire de connexion avec un message d'erreur si les champs ne sont pas remplis (Parce quue l'utilsateur peut arriver sur la pagesans passer par le formulaire de connexion)
     exit();
 }
-
