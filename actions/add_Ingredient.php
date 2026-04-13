@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(session_status() === PHP_SESSION_NONE){
+ session_start();
+}
+// Ajoute un ingrédient dans la base avec son image éventuelle.
 
 
 if(!isset($_SESSION["login"])){
