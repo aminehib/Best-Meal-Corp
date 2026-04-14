@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(session_status() === PHP_SESSION_NONE){
+ session_start();
+}
+// Ajoute un nouveau tag depuis l'interface d'administration.
 
 
 if(!isset($_SESSION["login"])){
