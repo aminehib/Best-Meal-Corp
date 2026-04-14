@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(session_status() === PHP_SESSION_NONE){
+ session_start();
+}
+// Traite la création complète d'une recette depuis le formulaire d'administration.
 
 
 if(!isset($_SESSION["login"])){
@@ -50,6 +53,12 @@ if(isset($_POST["title"])){
     $name = $_POST["title"];
 }
 
+if(!$name){
+    $_SESSION["erreur"] = "Le champ title doit etre rempli";
+     header("Location:/ProjetWeb/pages/forms/ajouter.php") ;
+     exit() ;
+}
+
 
 if(isset($_POST["ingredients"])){
     $ingredients = $_POST["ingredients"] ;
@@ -96,7 +105,5 @@ $db->addRecepie($name ,$description,$ingredients , $tags ,$filename ,$preparatio
 
 header("Location:/ProjetWeb/pages/recettes.php");
 exit();
-
-
 
 
