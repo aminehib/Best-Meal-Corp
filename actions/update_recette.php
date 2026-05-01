@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(session_status() === PHP_SESSION_NONE){
+ session_start();
+}
+// Met à jour une recette existante à partir du formulaire de détail/édition.
 
 if(!isset($_SESSION["login"])){
     $_SESSION["erreur"] = "Accès Interdit";
@@ -115,8 +118,4 @@ $db->updateRecepie($id ,$name ,$description,$ingredients , $tags ,$filename ,$pr
 
 header("Location:/ProjetWeb/pages/recette.php?id=$id");
 exit();
-
-
-
-
 
