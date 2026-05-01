@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(session_status() === PHP_SESSION_NONE){
+ session_start();
+}
+// Supprime une recette depuis le listing administrateur.
 
 
 if(!isset($_SESSION["login"])){
